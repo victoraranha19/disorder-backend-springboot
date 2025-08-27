@@ -33,9 +33,9 @@ public class Categoria {
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double valorPlanejado;
+  private Double valorPlanejado;
 
   @NotNull
   @Column(nullable = false)
-  private int idUsuario;
+  private Integer idUsuario;
 }

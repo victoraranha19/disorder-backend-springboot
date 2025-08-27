@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Transacao;
+import com.victor.dto.TransacaoDTO;
 import com.victor.service.TransacaoService;
 
 import org.springframework.http.HttpStatus;
@@ -28,23 +28,23 @@ public class TransacaoController {
   }
 
   @GetMapping
-  public List<Transacao> listarTransacoes() {
+  public List<TransacaoDTO> listarTransacoes() {
     return transacaoService.listarTransacoes();
   }
 
   @GetMapping("/{id}")
-  public Transacao transacaoPorId(@PathVariable Long id) {
+  public TransacaoDTO transacaoPorId(@PathVariable Long id) {
     return transacaoService.transacaoPorId(id);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Transacao criarTransacao(@RequestBody Transacao transacao) {
+  public TransacaoDTO criarTransacao(@RequestBody TransacaoDTO transacao) {
     return transacaoService.criarTransacao(transacao);
   }
 
   @PutMapping("/{id}")
-  public Transacao atualizarTransacao(@PathVariable Long id, @RequestBody Transacao transacao) {
+  public TransacaoDTO atualizarTransacao(@PathVariable Long id, @RequestBody TransacaoDTO transacao) {
     return transacaoService.atualizarTransacao(id, transacao);
   }
 

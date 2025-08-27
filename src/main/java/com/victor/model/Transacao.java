@@ -35,7 +35,7 @@ public class Transacao {
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double valor;
+  private Double valor;
 
   @NotNull
   @Column(nullable = false)
@@ -47,12 +47,12 @@ public class Transacao {
   private String tipo; // 'C' para crédito, 'D' para débito
 
   @Column()
-  private int idCategoria;
+  private Integer idCategoria;
 
   @Column()
-  private int idCarteira;
+  private Integer idCarteira;
 
   @NotNull
   @Column(nullable = false)
-  private int idUsuario;
+  private Integer idUsuario;
 }

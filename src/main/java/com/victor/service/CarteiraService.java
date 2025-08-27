@@ -1,10 +1,13 @@
 package com.victor.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.victor.dto.CarteiraDTO;
+import com.victor.dto.mapper.CarteiraMapper;
 import com.victor.exception.RecordNotFoundException;
 import com.victor.model.Carteira;
 import com.victor.repository.CarteiraRepository;
@@ -18,28 +21,39 @@ import jakarta.validation.constraints.Positive;
 public class CarteiraService {
 
   private final CarteiraRepository carteiraRepository;
+  private final CarteiraMapper carteiraMapper;
 
-  public CarteiraService(CarteiraRepository carteiraRepository) {
+  public CarteiraService(CarteiraRepository carteiraRepository, CarteiraMapper carteiraMapper) {
     this.carteiraRepository = carteiraRepository;
+    this.carteiraMapper = carteiraMapper;
   }
 
-  public List<Carteira> listarCarteiras() {
-    return carteiraRepository.findAll();
+  public List<CarteiraDTO> listarCarteiras() {
+    return carteiraRepository.findAll()
+        .stream()
+        .map(carteiraMapper::toDTO)
+        .collect(Collectors.toList());
   }
 
-  public Carteira carteiraPorId(@NotNull @Positive Long id) {
-    return carteiraRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+  public CarteiraDTO carteiraPorId(@NotNull @Positive Long id) {
+    return carteiraRepository.findById(id)
+        .map(carteiraMapper::toDTO)
+        .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public Carteira criarCarteira(@Valid Carteira carteira) {
-    return carteiraRepository.save(carteira);
+  public CarteiraDTO criarCarteira(@Valid @NotNull CarteiraDTO carteiraDTO) {
+    return carteiraMapper.toDTO(carteiraRepository.save(carteiraMapper.toEntity(carteiraDTO)));
   }
 
-  public Carteira atualizarCarteira(@NotNull @Positive Long id, @Valid Carteira carteira) {
-    return carteiraRepository.findById(id).map((recordFound) -> {
-      carteira.setId(recordFound.getId());
-      return carteiraRepository.save(carteira);
-    }).orElseThrow(() -> new RecordNotFoundException(id));
+  public CarteiraDTO atualizarCarteira(@NotNull @Positive Long id, @Valid @NotNull CarteiraDTO carteiraDTO) {
+    return carteiraRepository.findById(id)
+        .map((recordFound) -> {
+          Carteira carteira = carteiraMapper.toEntity(carteiraDTO);
+          carteira.setId(recordFound.getId());
+          return carteiraRepository.save(carteira);
+        })
+        .map(carteiraMapper::toDTO)
+        .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public void deletarCarteira(@NotNull @Positive Long id) {

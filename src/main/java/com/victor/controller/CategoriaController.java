@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Categoria;
+import com.victor.dto.CategoriaDTO;
 import com.victor.service.CategoriaService;
 
 @RestController
@@ -27,23 +27,23 @@ public class CategoriaController {
   }
 
   @GetMapping
-  public List<Categoria> listarCategorias() {
+  public List<CategoriaDTO> listarCategorias() {
     return categoriaService.listarCategorias();
   }
 
   @GetMapping("/{id}")
-  public Categoria categoriaPorId(@PathVariable Long id) {
+  public CategoriaDTO categoriaPorId(@PathVariable Long id) {
     return categoriaService.categoriaPorId(id);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Categoria criarCategoria(@RequestBody Categoria categoria) {
+  public CategoriaDTO criarCategoria(@RequestBody CategoriaDTO categoria) {
     return categoriaService.criarCategoria(categoria);
   }
 
   @PutMapping("/{id}")
-  public Categoria atualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+  public CategoriaDTO atualizarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoria) {
     return categoriaService.atualizarCategoria(id, categoria);
   }
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Usuario;
+import com.victor.dto.UsuarioDTO;
 import com.victor.service.UsuarioService;
 
 @RestController
@@ -27,23 +27,23 @@ public class UsuarioController {
   }
 
   @GetMapping
-  public List<Usuario> listarUsuarios() {
+  public List<UsuarioDTO> listarUsuarios() {
     return usuarioService.listarUsuarios();
   }
 
   @GetMapping("/{id}")
-  public Usuario usuarioPorId(@PathVariable Long id) {
+  public UsuarioDTO usuarioPorId(@PathVariable Long id) {
     return usuarioService.usuarioPorId(id);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Usuario criarUsuario(@RequestBody Usuario usuario) {
+  public UsuarioDTO criarUsuario(@RequestBody UsuarioDTO usuario) {
     return usuarioService.criarUsuario(usuario);
   }
 
   @PutMapping("/{id}")
-  public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+  public UsuarioDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuario) {
     return usuarioService.atualizarUsuario(id, usuario);
   }
 

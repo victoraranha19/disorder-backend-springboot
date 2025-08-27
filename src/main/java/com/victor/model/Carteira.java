@@ -33,24 +33,24 @@ public class Carteira {
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double contaCorrente;
+  private Double contaCorrente;
 
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double contaPoupanca;
+  private Double contaPoupanca;
 
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double contaInvestimento;
+  private Double contaInvestimento;
 
   @NotNull
   @PositiveOrZero
   @Column(nullable = false)
-  private double limiteCreditoTotal;
+  private Double limiteCreditoTotal;
 
   @NotNull
   @Column(nullable = false)
-  private int idUsuario;
+  private Integer idUsuario;
 }

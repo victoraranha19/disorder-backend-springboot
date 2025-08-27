@@ -54,5 +54,5 @@ public class Usuario {
   private String chavePix;
 
   @Column()
-  private int idAcessor;
+  private Integer idAcessor;
 }

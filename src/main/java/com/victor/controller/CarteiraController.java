@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Carteira;
+import com.victor.dto.CarteiraDTO;
 import com.victor.service.CarteiraService;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,24 +29,24 @@ public class CarteiraController {
   }
 
   @GetMapping
-  public @ResponseBody List<Carteira> listarCarteiras() {
+  public @ResponseBody List<CarteiraDTO> listarCarteiras() {
     return carteiraService.listarCarteiras();
   }
 
   @GetMapping("/{id}")
-  public Carteira carteiraPorId(@PathVariable Long id) {
+  public CarteiraDTO carteiraPorId(@PathVariable Long id) {
     return carteiraService.carteiraPorId(id);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Carteira criarCarteira(@RequestBody Carteira carteira) {
-    return carteiraService.criarCarteira(carteira);
+  public CarteiraDTO criarCarteira(@RequestBody CarteiraDTO carteiraDTO) {
+    return carteiraService.criarCarteira(carteiraDTO);
   }
 
   @PutMapping("/{id}")
-  public Carteira atualizarCarteira(@PathVariable Long id, @RequestBody Carteira carteira) {
-    return carteiraService.atualizarCarteira(id, carteira);
+  public CarteiraDTO atualizarCarteira(@PathVariable Long id, @RequestBody CarteiraDTO carteiraDTO) {
+    return carteiraService.atualizarCarteira(id, carteiraDTO);
   }
 
   @DeleteMapping("/{id}")
