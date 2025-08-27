@@ -2,6 +2,8 @@ package com.victor.model;
 
 import java.util.Date;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
@@ -11,12 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "transacoes")
+@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
 public class Transacao {
 
   @Id
@@ -38,8 +42,9 @@ public class Transacao {
   private Date dataTransacao;
 
   @NotNull
+  @Pattern(regexp = "C|D")
   @Column(nullable = false)
-  private char tipo; // 'C' para crédito, 'D' para débito
+  private String tipo; // 'C' para crédito, 'D' para débito
 
   @Column()
   private int idCategoria;
@@ -50,8 +55,4 @@ public class Transacao {
   @NotNull
   @Column(nullable = false)
   private int idUsuario;
-
-  @NotNull
-  @Column(nullable = false)
-  private boolean ativo;
 }

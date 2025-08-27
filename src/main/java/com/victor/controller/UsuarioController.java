@@ -3,8 +3,6 @@ package com.victor.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,55 +14,42 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.victor.model.Usuario;
-import com.victor.repository.UsuarioRepository;
+import com.victor.service.UsuarioService;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-
-@Validated
 @RestController
 @RequestMapping("/api/usuarios")
-@AllArgsConstructor
 public class UsuarioController {
 
-  private final UsuarioRepository usuarioRepository;
+  private final UsuarioService usuarioService;
+
+  public UsuarioController(UsuarioService usuarioService) {
+    this.usuarioService = usuarioService;
+  }
 
   @GetMapping
   public List<Usuario> listarUsuarios() {
-    return usuarioRepository.findAll();
+    return usuarioService.listarUsuarios();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Usuario> carteiraPorId(@PathVariable @NotNull @Positive Long id) {
-    return usuarioRepository.findById(id).map(usuario -> ResponseEntity.ok().body(usuario))
-        .orElse(ResponseEntity.notFound().build());
+  public Usuario usuarioPorId(@PathVariable Long id) {
+    return usuarioService.usuarioPorId(id);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Usuario criarUsuario(@RequestBody @Valid Usuario usuario) {
-    return usuarioRepository.save(usuario);
+  public Usuario criarUsuario(@RequestBody Usuario usuario) {
+    return usuarioService.criarUsuario(usuario);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Usuario> atualizarTransacao(@PathVariable @NotNull @Positive Long id,
-      @RequestBody @Valid Usuario usuario) {
-    if (!usuarioRepository.existsById(id)) {
-      return ResponseEntity.notFound().build();
-    }
-    usuario.setId(id);
-    Usuario atualizado = usuarioRepository.save(usuario);
-    return ResponseEntity.ok().body(atualizado);
+  public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+    return usuarioService.atualizarUsuario(id, usuario);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deletarTransacao(@PathVariable @NotNull @Positive Long id) {
-    if (!usuarioRepository.existsById(id)) {
-      return ResponseEntity.notFound().build();
-    }
-    usuarioRepository.deleteById(id);
-    return ResponseEntity.noContent().build();
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deletarUsuario(@PathVariable Long id) {
+    usuarioService.deletarUsuario(id);
   }
 }

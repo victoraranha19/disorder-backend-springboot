@@ -1,5 +1,7 @@
 package com.victor.model;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
@@ -16,6 +18,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "carteiras")
+@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
 public class Carteira {
 
   @Id
@@ -50,8 +53,4 @@ public class Carteira {
   @NotNull
   @Column(nullable = false)
   private int idUsuario;
-
-  @NotNull
-  @Column(nullable = false)
-  private boolean ativo;
 }

@@ -27,11 +27,10 @@ public class DisorderSpringApplication {
 			t.setDescricao("Compra de café");
 			t.setValor(5.50);
 			t.setDataTransacao(new java.util.Date());
-			t.setTipo('D'); // 'D' para débito
+			t.setTipo("D"); // 'D' para débito
 			t.setIdCategoria(1);
 			t.setIdCarteira(1);
 			t.setIdUsuario(1);
-			t.setAtivo(true);
 
 			Carteira c = new Carteira();
 			c.setTitulo("Carteira Pessoal");
@@ -40,7 +39,6 @@ public class DisorderSpringApplication {
 			c.setContaInvestimento(300.00);
 			c.setLimiteCreditoTotal(500.00);
 			c.setIdUsuario(1);
-			c.setAtivo(true);
 
 			transacaoRepository.save(t);
 			carteiraRepository.save(c);
