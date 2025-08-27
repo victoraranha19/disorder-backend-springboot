@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Carteira;
-import com.victor.repository.CarteiraRepository;
+import com.victor.model.Categoria;
+import com.victor.repository.CategoriaRepository;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/carteiras")
+@RequestMapping("/api/categorias")
 @AllArgsConstructor
-public class CarteiraController {
+public class CategoriaController {
 
-  private final CarteiraRepository carteiraRepository;
+  private final CategoriaRepository categoriaRepository;
 
   @GetMapping
-  public List<Carteira> listarCarteiras() {
-    return carteiraRepository.findAll();
+  public List<Categoria> listarCategorias() {
+    return categoriaRepository.findAll();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Carteira criarCarteira(@RequestBody Carteira carteira) {
-    return carteiraRepository.save(carteira);
+  public Categoria criarCategoria(@RequestBody Categoria categoria) {
+    return categoriaRepository.save(categoria);
   }
 }

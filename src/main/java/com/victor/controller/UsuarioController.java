@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.victor.model.Carteira;
-import com.victor.repository.CarteiraRepository;
+import com.victor.model.Usuario;
+import com.victor.repository.UsuarioRepository;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/carteiras")
+@RequestMapping("/api/usuarios")
 @AllArgsConstructor
-public class CarteiraController {
+public class UsuarioController {
 
-  private final CarteiraRepository carteiraRepository;
+  private final UsuarioRepository usuarioRepository;
 
   @GetMapping
-  public List<Carteira> listarCarteiras() {
-    return carteiraRepository.findAll();
+  public List<Usuario> listarUsuarios() {
+    return usuarioRepository.findAll();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Carteira criarCarteira(@RequestBody Carteira carteira) {
-    return carteiraRepository.save(carteira);
+  public Usuario criarUsuario(@RequestBody Usuario usuario) {
+    return usuarioRepository.save(usuario);
   }
 }

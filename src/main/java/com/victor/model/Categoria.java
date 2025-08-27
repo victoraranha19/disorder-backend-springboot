@@ -1,7 +1,5 @@
 package com.victor.model;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,30 +10,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "transacoes")
-public class Transacao {
+@Table(name = "categorias")
+public class Categoria {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(length = 255)
-  private String descricao;
-
-  @Column(nullable = false)
-  private double valor;
-
-  @Column(nullable = false)
-  private Date dataTransacao;
-
-  @Column(nullable = false)
-  private char tipo; // 'C' para crédito, 'D' para débito
+  @Column(length = 255, nullable = false)
+  private String titulo;
 
   @Column()
-  private int idCategoria;
-
-  @Column()
-  private int idCarteira;
+  private double valorPlanejado;
 
   @Column(nullable = false)
   private int idUsuario;
