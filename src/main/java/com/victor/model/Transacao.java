@@ -6,14 +6,17 @@ import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
 
+import com.victor.enums.TipoTransacao;
+import com.victor.enums.converters.TipoTransacaoConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -42,9 +45,9 @@ public class Transacao {
   private Date dataTransacao;
 
   @NotNull
-  @Pattern(regexp = "C|D")
   @Column(nullable = false)
-  private String tipo; // 'C' para crédito, 'D' para débito
+  @Convert(converter = TipoTransacaoConverter.class)
+  private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
 
   @Column()
   private Integer idCategoria;

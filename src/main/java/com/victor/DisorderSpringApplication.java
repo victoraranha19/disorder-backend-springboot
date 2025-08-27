@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.victor.enums.TipoTransacao;
 import com.victor.model.Carteira;
 import com.victor.model.Transacao;
 import com.victor.repository.CarteiraRepository;
@@ -27,7 +28,7 @@ public class DisorderSpringApplication {
 			t.setDescricao("Compra de café");
 			t.setValor(5.50);
 			t.setDataTransacao(new java.util.Date());
-			t.setTipo("D"); // 'D' para débito
+			t.setTipo(TipoTransacao.DEBITO);
 			t.setIdCategoria(1);
 			t.setIdCarteira(1);
 			t.setIdUsuario(1);
