@@ -21,6 +21,7 @@ public class DisorderSpringApplication {
 	CommandLineRunner initDataBase(TransacaoRepository transacaoRepository, CarteiraRepository carteiraRepository) {
 		return args -> {
 			transacaoRepository.deleteAll();
+			carteiraRepository.deleteAll();
 
 			Transacao t = new Transacao();
 			t.setDescricao("Compra de café");
