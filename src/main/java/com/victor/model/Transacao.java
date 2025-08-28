@@ -21,9 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "transacoes")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
@@ -66,4 +64,68 @@ public class Transacao {
   @JoinColumn(name = "idCategoria")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Categoria categoria;
+
+  public Long getIdTransacao() {
+    return idTransacao;
+  }
+
+  public void setIdTransacao(Long idTransacao) {
+    this.idTransacao = idTransacao;
+  }
+
+  public String getDescricao() {
+    return descricao;
+  }
+
+  public void setDescricao(@NotNull @Length(max = 255) String descricao) {
+    this.descricao = descricao;
+  }
+
+  public Double getValor() {
+    return valor;
+  }
+
+  public void setValor(@NotNull @PositiveOrZero Double valor) {
+    this.valor = valor;
+  }
+
+  public Date getDataTransacao() {
+    return dataTransacao;
+  }
+
+  public void setDataTransacao(@NotNull Date dataTransacao) {
+    this.dataTransacao = dataTransacao;
+  }
+
+  public TipoTransacao getTipo() {
+    return tipo;
+  }
+
+  public void setTipo(@NotNull TipoTransacao tipo) {
+    this.tipo = tipo;
+  }
+
+  public Usuario getUsuario() {
+    return usuario;
+  }
+
+  public void setUsuario(Usuario usuario) {
+    this.usuario = usuario;
+  }
+
+  public Carteira getCarteira() {
+    return carteira;
+  }
+
+  public void setCarteira(Carteira carteira) {
+    this.carteira = carteira;
+  }
+
+  public Categoria getCategoria() {
+    return categoria;
+  }
+
+  public void setCategoria(Categoria categoria) {
+    this.categoria = categoria;
+  }
 }

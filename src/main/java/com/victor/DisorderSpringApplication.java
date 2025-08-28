@@ -41,6 +41,14 @@ public class DisorderSpringApplication {
 			u.setTelefone("4002-8922");
 			u.setChavePix("4002-8922");
 
+			Usuario acessor = new Usuario();
+			acessor.setUsername("gustavo");
+			acessor.setPassword("gustavo");
+			acessor.setNomeCompleto("gustavo");
+			acessor.setEmail("gustavo@gmail.com");
+			acessor.setTelefone("4002-8922");
+			acessor.setChavePix("4002-8922");
+
 			Carteira ct = new Carteira();
 			ct.setTitulo("Caixa");
 			ct.setContaCorrente(100.00);
@@ -58,13 +66,13 @@ public class DisorderSpringApplication {
 			t.setDataTransacao(new Date());
 			t.setTipo(TipoTransacao.DEBITO);
 
-			u.getCarteiras().add(ct);
+			u.addCarteira(ct);
 			ct.setUsuario(u);
 
-			u.getCategorias().add(cg);
+			u.addCategoria(cg);
 			cg.setUsuario(u);
 
-			u.getTransacoes().add(t);
+			u.addTransacao(t);
 			t.setUsuario(u);
 
 			ct.getTransacoes().add(t);
@@ -73,9 +81,14 @@ public class DisorderSpringApplication {
 			cg.getTransacoes().add(t);
 			t.setCategoria(cg);
 
+			u.setAcessor(acessor);
+			acessor.addCliente(u);
+
+			usuarioRepository.save(acessor);
 			usuarioRepository.save(u);
-			transacaoRepository.save(t);
 			carteiraRepository.save(ct);
+			categoriaRepository.save(cg);
+			transacaoRepository.save(t);
 		};
 	}
 }

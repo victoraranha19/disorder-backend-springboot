@@ -21,9 +21,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "carteiras")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
@@ -65,4 +63,72 @@ public class Carteira {
 
   @OneToMany(mappedBy = "carteira")
   private List<Transacao> transacoes = new ArrayList<>();
+
+  public Long getIdCarteira() {
+    return idCarteira;
+  }
+
+  public void setIdCarteira(Long idCarteira) {
+    this.idCarteira = idCarteira;
+  }
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(@NotBlank @Length(max = 100) String titulo) {
+    this.titulo = titulo;
+  }
+
+  public Double getContaCorrente() {
+    return contaCorrente;
+  }
+
+  public void setContaCorrente(@NotNull @PositiveOrZero Double contaCorrente) {
+    this.contaCorrente = contaCorrente;
+  }
+
+  public Double getContaPoupanca() {
+    return contaPoupanca;
+  }
+
+  public void setContaPoupanca(@NotNull @PositiveOrZero Double contaPoupanca) {
+    this.contaPoupanca = contaPoupanca;
+  }
+
+  public Double getContaInvestimento() {
+    return contaInvestimento;
+  }
+
+  public void setContaInvestimento(@NotNull @PositiveOrZero Double contaInvestimento) {
+    this.contaInvestimento = contaInvestimento;
+  }
+
+  public Double getLimiteCreditoTotal() {
+    return limiteCreditoTotal;
+  }
+
+  public void setLimiteCreditoTotal(@NotNull @PositiveOrZero Double limiteCreditoTotal) {
+    this.limiteCreditoTotal = limiteCreditoTotal;
+  }
+
+  public Usuario getUsuario() {
+    return usuario;
+  }
+
+  public void setUsuario(Usuario usuario) {
+    this.usuario = usuario;
+  }
+
+  public List<Transacao> getTransacoes() {
+    return new ArrayList<Transacao>(this.transacoes);
+  }
+
+  public void addTransacao(Transacao transacao) {
+    this.transacoes.add(transacao);
+  }
+
+  public void limparTransacoes() {
+    this.transacoes.clear();
+  }
 }

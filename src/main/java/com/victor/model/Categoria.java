@@ -21,9 +21,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "categorias")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
@@ -50,4 +48,48 @@ public class Categoria {
 
   @OneToMany(mappedBy = "categoria")
   private List<Transacao> transacoes = new ArrayList<>();
+
+  public Long getIdCategoria() {
+    return idCategoria;
+  }
+
+  public void setIdCategoria(Long idCategoria) {
+    this.idCategoria = idCategoria;
+  }
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(@NotBlank @Length(max = 100) String titulo) {
+    this.titulo = titulo;
+  }
+
+  public Double getValorPlanejado() {
+    return valorPlanejado;
+  }
+
+  public void setValorPlanejado(@NotNull @PositiveOrZero Double valorPlanejado) {
+    this.valorPlanejado = valorPlanejado;
+  }
+
+  public Usuario getUsuario() {
+    return usuario;
+  }
+
+  public void setUsuario(Usuario usuario) {
+    this.usuario = usuario;
+  }
+
+  public List<Transacao> getTransacoes() {
+    return new ArrayList<Transacao>(this.transacoes);
+  }
+
+  public void addTransacao(Transacao transacao) {
+    this.transacoes.add(transacao);
+  }
+
+  public void limparTransacoes() {
+    this.transacoes.clear();
+  }
 }
