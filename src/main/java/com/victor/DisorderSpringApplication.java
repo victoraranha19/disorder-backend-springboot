@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import com.victor.enums.TipoTransacao;
 import com.victor.model.Instituicao;
@@ -27,6 +28,7 @@ public class DisorderSpringApplication {
 	}
 
 	@Bean
+	@Profile("test")
 	CommandLineRunner initDataBase(UsuarioRepository usuarioRepository, TransacaoRepository transacaoRepository,
 			ContaRepository contaRepository, CategoriaRepository categoriaRepository,
 			InstituicaoRepository instituicaoRepository) {
