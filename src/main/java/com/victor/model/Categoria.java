@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -41,11 +42,15 @@ public class Categoria {
   @Column(nullable = false)
   private Double valorPlanejado;
 
+  @NotNull
+  @Valid
   @ManyToOne(optional = false)
   @JoinColumn(name = "idUsuario", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario usuario;
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "categoria")
   private List<Transacao> transacoes = new ArrayList<>();
 
@@ -77,7 +82,7 @@ public class Categoria {
     return usuario;
   }
 
-  public void setUsuario(Usuario usuario) {
+  public void setUsuario(@NotNull @Valid Usuario usuario) {
     this.usuario = usuario;
   }
 
@@ -85,7 +90,7 @@ public class Categoria {
     return new ArrayList<Transacao>(this.transacoes);
   }
 
-  public void addTransacao(Transacao transacao) {
+  public void addTransacao(@NotNull @Valid Transacao transacao) {
     this.transacoes.add(transacao);
   }
 

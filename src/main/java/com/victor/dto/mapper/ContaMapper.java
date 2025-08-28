@@ -14,7 +14,7 @@ public class ContaMapper {
     }
 
     return new ContaDTO(conta.getIdConta(), conta.getNome(), conta.getValorConta(),
-        conta.getTipoTransacao().getValue());
+        conta.getTipo().getValue());
   }
 
   public static Conta toEntity(ContaDTO contaDTO) {
@@ -29,7 +29,7 @@ public class ContaMapper {
 
     conta.setNome(contaDTO.nome());
     conta.setValorConta(contaDTO.valorConta());
-    conta.setTipoTransacao(TipoTransacao.convertTipoTransacaoValue(contaDTO.tipo()));
+    conta.setTipo(TipoTransacao.convertTipoTransacaoValue(contaDTO.tipo()));
 
     return conta;
   }

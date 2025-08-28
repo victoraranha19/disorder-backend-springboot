@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -49,23 +50,27 @@ public class Transacao {
   @NotNull
   @Column(nullable = false)
   @Convert(converter = TipoTransacaoConverter.class)
-  private TipoTransacao tipoTransacao; // 'C' para crédito, 'D' para débito
+  private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
 
   @NotNull
   @Positive
   @Column(nullable = false)
   private Integer parcelas = 1;
 
+  @NotNull
+  @Valid
   @ManyToOne(optional = false)
   @JoinColumn(name = "idUsuario", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario usuario;
 
+  @Valid
   @ManyToOne(optional = true)
   @JoinColumn(name = "idConta")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Conta conta;
 
+  @Valid
   @ManyToOne(optional = true)
   @JoinColumn(name = "idCategoria")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -103,12 +108,12 @@ public class Transacao {
     this.dataTransacao = dataTransacao;
   }
 
-  public TipoTransacao getTipoTransacao() {
-    return tipoTransacao;
+  public TipoTransacao getTipo() {
+    return tipo;
   }
 
-  public void setTipoTransacao(@NotNull TipoTransacao tipoTransacao) {
-    this.tipoTransacao = tipoTransacao;
+  public void setTipo(@NotNull TipoTransacao tipo) {
+    this.tipo = tipo;
   }
 
   public Integer getParcelas() {
@@ -123,7 +128,7 @@ public class Transacao {
     return usuario;
   }
 
-  public void setUsuario(Usuario usuario) {
+  public void setUsuario(@NotNull @Valid Usuario usuario) {
     this.usuario = usuario;
   }
 
@@ -131,7 +136,7 @@ public class Transacao {
     return conta;
   }
 
-  public void setConta(Conta conta) {
+  public void setConta(@Valid Conta conta) {
     this.conta = conta;
   }
 
@@ -139,7 +144,7 @@ public class Transacao {
     return categoria;
   }
 
-  public void setCategoria(Categoria categoria) {
+  public void setCategoria(@Valid Categoria categoria) {
     this.categoria = categoria;
   }
 }

@@ -75,7 +75,7 @@ public class DisorderSpringApplication {
 			t.setDescricao("Compra de café");
 			t.setValor(5.50);
 			t.setDataTransacao(new Date());
-			t.setTipoTransacao(TipoTransacao.DEBITO);
+			t.setTipo(TipoTransacao.DEBITO);
 			t.setParcelas(1);
 
 			t.setUsuario(u);
@@ -88,16 +88,16 @@ public class DisorderSpringApplication {
 
 			i.setUsuario(u);
 			u.addCarteira(i);
-			instituicaoRepository.save(i);
 
 			co.setNome("Credito");
 			co.setValorConta(1000.0);
-			co.setTipoTransacao(TipoTransacao.CREDITO);
+			co.setTipo(TipoTransacao.CREDITO);
 
 			co.setInstituicao(i);
 			i.addConta(co);
 			co.addTransacao(t);
 			t.setConta(co);
+			instituicaoRepository.save(i);
 			contaRepository.save(co);
 		};
 	}

@@ -21,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -47,13 +48,17 @@ public class Conta {
   @NotNull
   @Column(nullable = false)
   @Convert(converter = TipoTransacaoConverter.class)
-  private TipoTransacao tipoTransacao; // 'C' para crédito, 'D' para débito
+  private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
 
+  @NotNull
+  @Valid
   @ManyToOne(optional = false)
   @JoinColumn(name = "idInstituicao", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Instituicao instituicao;
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "conta")
   private List<Transacao> transacoes = new ArrayList<>();
 
@@ -81,19 +86,19 @@ public class Conta {
     this.valorConta = valorConta;
   }
 
-  public TipoTransacao getTipoTransacao() {
-    return tipoTransacao;
+  public TipoTransacao getTipo() {
+    return tipo;
   }
 
-  public void setTipoTransacao(@NotNull TipoTransacao tipoTransacao) {
-    this.tipoTransacao = tipoTransacao;
+  public void setTipo(@NotNull TipoTransacao tipo) {
+    this.tipo = tipo;
   }
 
   public Instituicao getInstituicao() {
     return instituicao;
   }
 
-  public void setInstituicao(Instituicao instituicao) {
+  public void setInstituicao(@NotNull @Valid Instituicao instituicao) {
     this.instituicao = instituicao;
   }
 
@@ -101,7 +106,7 @@ public class Conta {
     return new ArrayList<Transacao>(this.transacoes);
   }
 
-  public void addTransacao(Transacao transacao) {
+  public void addTransacao(@NotNull @Valid Transacao transacao) {
     this.transacoes.add(transacao);
   }
 

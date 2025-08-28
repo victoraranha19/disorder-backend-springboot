@@ -14,7 +14,7 @@ public class TransacaoMapper {
     }
 
     return new TransacaoDTO(transacao.getIdTransacao(), transacao.getDescricao(), transacao.getValor(),
-        transacao.getDataTransacao(), transacao.getTipoTransacao().getValue(), transacao.getParcelas());
+        transacao.getDataTransacao(), transacao.getTipo().getValue(), transacao.getParcelas());
   }
 
   public static Transacao toEntity(TransacaoDTO transacaoDTO) {
@@ -30,7 +30,7 @@ public class TransacaoMapper {
     transacao.setDescricao(transacaoDTO.descricao());
     transacao.setValor(transacaoDTO.valor());
     transacao.setDataTransacao(transacaoDTO.dataTransacao());
-    transacao.setTipoTransacao(TipoTransacao.convertTipoTransacaoValue(transacaoDTO.tipo()));
+    transacao.setTipo(TipoTransacao.convertTipoTransacaoValue(transacaoDTO.tipo()));
     transacao.setParcelas(transacaoDTO.parcelas());
 
     return transacao;

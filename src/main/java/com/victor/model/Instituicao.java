@@ -18,7 +18,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "instituicoes")
@@ -34,11 +37,15 @@ public class Instituicao {
   @Column(length = 100, nullable = false)
   private String nome;
 
+  @NotNull
+  @Valid
   @ManyToOne(optional = false)
   @JoinColumn(name = "idUsuario", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario usuario;
 
+  @NotEmpty
+  @Valid
   @OneToMany(mappedBy = "instituicao")
   private List<Conta> contas = new ArrayList<Conta>();
 
@@ -62,7 +69,7 @@ public class Instituicao {
     return usuario;
   }
 
-  public void setUsuario(Usuario usuario) {
+  public void setUsuario(@NotNull @Valid Usuario usuario) {
     this.usuario = usuario;
   }
 
@@ -70,7 +77,7 @@ public class Instituicao {
     return new ArrayList<Conta>(this.contas);
   }
 
-  public void addConta(Conta conta) {
+  public void addConta(@NotNull @Valid Conta conta) {
     this.contas.add(conta);
   }
 

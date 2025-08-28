@@ -19,8 +19,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usuarios")
@@ -60,20 +62,29 @@ public class Usuario {
   @Column(length = 255)
   private String chavePix;
 
+  @Valid
   @ManyToOne(optional = true)
   @JoinColumn(name = "idAcessor")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario acessor;
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "acessor", fetch = FetchType.LAZY)
   private List<Usuario> clientes = new ArrayList<Usuario>();
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Transacao> transacoes = new ArrayList<Transacao>();
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Instituicao> carteiras = new ArrayList<Instituicao>();
 
+  @NotNull
+  @Valid
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Categoria> categorias = new ArrayList<Categoria>();
 
@@ -137,7 +148,7 @@ public class Usuario {
     return this.acessor;
   }
 
-  public void setAcessor(Usuario acessor) {
+  public void setAcessor(@Valid Usuario acessor) {
     this.acessor = acessor;
   }
 
@@ -145,7 +156,7 @@ public class Usuario {
     return new ArrayList<Usuario>(this.clientes);
   }
 
-  public void addCliente(Usuario cliente) {
+  public void addCliente(@NotNull @Valid Usuario cliente) {
     this.clientes.add(cliente);
   }
 
@@ -157,7 +168,7 @@ public class Usuario {
     return new ArrayList<Transacao>(this.transacoes);
   }
 
-  public void addTransacao(Transacao transacao) {
+  public void addTransacao(@NotNull @Valid Transacao transacao) {
     this.transacoes.add(transacao);
   }
 
@@ -169,7 +180,7 @@ public class Usuario {
     return new ArrayList<Instituicao>(this.carteiras);
   }
 
-  public void addCarteira(Instituicao carteira) {
+  public void addCarteira(@NotNull @Valid Instituicao carteira) {
     this.carteiras.add(carteira);
   }
 
@@ -181,7 +192,7 @@ public class Usuario {
     return new ArrayList<Categoria>(this.categorias);
   }
 
-  public void addCategoria(Categoria categoria) {
+  public void addCategoria(@NotNull @Valid Categoria categoria) {
     this.categorias.add(categoria);
   }
 
