@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.victor.enums.TipoTransacao;
-import com.victor.model.Carteira;
+import com.victor.model.Instituicao;
 import com.victor.model.Categoria;
+import com.victor.model.Conta;
 import com.victor.model.Transacao;
 import com.victor.model.Usuario;
-import com.victor.repository.CarteiraRepository;
+import com.victor.repository.InstituicaoRepository;
 import com.victor.repository.CategoriaRepository;
+import com.victor.repository.ContaRepository;
 import com.victor.repository.TransacaoRepository;
 import com.victor.repository.UsuarioRepository;
 
@@ -26,14 +28,22 @@ public class DisorderSpringApplication {
 
 	@Bean
 	CommandLineRunner initDataBase(UsuarioRepository usuarioRepository, TransacaoRepository transacaoRepository,
-			CarteiraRepository carteiraRepository, CategoriaRepository categoriaRepository) {
+			ContaRepository contaRepository, CategoriaRepository categoriaRepository,
+			InstituicaoRepository instituicaoRepository) {
 		return args -> {
 			usuarioRepository.deleteAll();
 			transacaoRepository.deleteAll();
-			carteiraRepository.deleteAll();
+			instituicaoRepository.deleteAll();
+			contaRepository.deleteAll();
 			categoriaRepository.deleteAll();
 
 			Usuario u = new Usuario();
+			Usuario acessor = new Usuario();
+			Categoria ca = new Categoria();
+			Transacao t = new Transacao();
+			Instituicao i = new Instituicao();
+			Conta co = new Conta();
+
 			u.setUsername("victor");
 			u.setPassword("victor");
 			u.setNomeCompleto("victor");
@@ -41,7 +51,8 @@ public class DisorderSpringApplication {
 			u.setTelefone("4002-8922");
 			u.setChavePix("4002-8922");
 
-			Usuario acessor = new Usuario();
+			usuarioRepository.save(u);
+
 			acessor.setUsername("gustavo");
 			acessor.setPassword("gustavo");
 			acessor.setNomeCompleto("gustavo");
@@ -49,46 +60,45 @@ public class DisorderSpringApplication {
 			acessor.setTelefone("4002-8922");
 			acessor.setChavePix("4002-8922");
 
-			Carteira ct = new Carteira();
-			ct.setTitulo("Caixa");
-			ct.setContaCorrente(100.00);
-			ct.setContaPoupanca(200.00);
-			ct.setContaInvestimento(300.00);
-			ct.setLimiteCreditoTotal(500.00);
+			u.setAcessor(acessor);
+			acessor.addCliente(u);
+			usuarioRepository.save(acessor);
+			usuarioRepository.save(u);
 
-			Categoria cg = new Categoria();
-			cg.setTitulo("Transporte");
-			cg.setValorPlanejado(100.00);
+			ca.setNome("Transporte");
+			ca.setValorPlanejado(100.00);
 
-			Transacao t = new Transacao();
+			ca.setUsuario(u);
+			u.addCategoria(ca);
+			categoriaRepository.save(ca);
+
 			t.setDescricao("Compra de café");
 			t.setValor(5.50);
 			t.setDataTransacao(new Date());
-			t.setTipo(TipoTransacao.DEBITO);
+			t.setTipoTransacao(TipoTransacao.DEBITO);
+			t.setParcelas(1);
 
-			u.addCarteira(ct);
-			ct.setUsuario(u);
-
-			u.addCategoria(cg);
-			cg.setUsuario(u);
-
-			u.addTransacao(t);
 			t.setUsuario(u);
-
-			ct.getTransacoes().add(t);
-			t.setCarteira(ct);
-
-			cg.getTransacoes().add(t);
-			t.setCategoria(cg);
-
-			u.setAcessor(acessor);
-			acessor.addCliente(u);
-
-			usuarioRepository.save(acessor);
-			usuarioRepository.save(u);
-			carteiraRepository.save(ct);
-			categoriaRepository.save(cg);
+			u.addTransacao(t);
+			t.setCategoria(ca);
+			ca.addTransacao(t);
 			transacaoRepository.save(t);
+
+			i.setNome("Caixa");
+
+			i.setUsuario(u);
+			u.addCarteira(i);
+			instituicaoRepository.save(i);
+
+			co.setNome("Credito");
+			co.setValorConta(1000.0);
+			co.setTipoTransacao(TipoTransacao.CREDITO);
+
+			co.setInstituicao(i);
+			i.addConta(co);
+			co.addTransacao(t);
+			t.setConta(co);
+			contaRepository.save(co);
 		};
 	}
 }

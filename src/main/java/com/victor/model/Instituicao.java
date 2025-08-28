@@ -19,42 +19,35 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
-@Table(name = "categorias")
+@Table(name = "instituicoes")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
-public class Categoria {
+public class Instituicao {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idCategoria;
+  private Long idInstituicao;
 
   @NotBlank
   @Length(max = 100)
   @Column(length = 100, nullable = false)
   private String nome;
 
-  @NotNull
-  @PositiveOrZero
-  @Column(nullable = false)
-  private Double valorPlanejado;
-
   @ManyToOne(optional = false)
   @JoinColumn(name = "idUsuario", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario usuario;
 
-  @OneToMany(mappedBy = "categoria")
-  private List<Transacao> transacoes = new ArrayList<>();
+  @OneToMany(mappedBy = "instituicao")
+  private List<Conta> contas = new ArrayList<Conta>();
 
-  public Long getIdCategoria() {
-    return idCategoria;
+  public Long getIdInstituicao() {
+    return idInstituicao;
   }
 
-  public void setIdCategoria(Long idCategoria) {
-    this.idCategoria = idCategoria;
+  public void setIdInstituicao(Long idCarteira) {
+    this.idInstituicao = idCarteira;
   }
 
   public String getNome() {
@@ -65,14 +58,6 @@ public class Categoria {
     this.nome = titulo;
   }
 
-  public Double getValorPlanejado() {
-    return valorPlanejado;
-  }
-
-  public void setValorPlanejado(@NotNull @PositiveOrZero Double valorPlanejado) {
-    this.valorPlanejado = valorPlanejado;
-  }
-
   public Usuario getUsuario() {
     return usuario;
   }
@@ -81,15 +66,15 @@ public class Categoria {
     this.usuario = usuario;
   }
 
-  public List<Transacao> getTransacoes() {
-    return new ArrayList<Transacao>(this.transacoes);
+  public List<Conta> getContas() {
+    return new ArrayList<Conta>(this.contas);
   }
 
-  public void addTransacao(Transacao transacao) {
-    this.transacoes.add(transacao);
+  public void addConta(Conta conta) {
+    this.contas.add(conta);
   }
 
-  public void limparTransacoes() {
-    this.transacoes.clear();
+  public void limparContas() {
+    this.contas.clear();
   }
 }

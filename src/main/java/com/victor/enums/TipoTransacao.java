@@ -17,4 +17,15 @@ public enum TipoTransacao {
   public String toString() {
     return value;
   }
+
+  public static TipoTransacao convertTipoTransacaoValue(String value) {
+    if (value == null) {
+      return null;
+    }
+    return switch (value) {
+      case "D" -> TipoTransacao.DEBITO;
+      case "C" -> TipoTransacao.CREDITO;
+      default -> throw new IllegalArgumentException("Tipo de Transação inválido: " + value);
+    };
+  }
 }

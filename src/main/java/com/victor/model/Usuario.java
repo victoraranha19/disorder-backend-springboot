@@ -60,7 +60,7 @@ public class Usuario {
   @Column(length = 255)
   private String chavePix;
 
-  @ManyToOne()
+  @ManyToOne(optional = true)
   @JoinColumn(name = "idAcessor")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Usuario acessor;
@@ -72,7 +72,7 @@ public class Usuario {
   private List<Transacao> transacoes = new ArrayList<Transacao>();
 
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Carteira> carteiras = new ArrayList<Carteira>();
+  private List<Instituicao> carteiras = new ArrayList<Instituicao>();
 
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Categoria> categorias = new ArrayList<Categoria>();
@@ -165,11 +165,11 @@ public class Usuario {
     this.transacoes.clear();
   }
 
-  public List<Carteira> getCarteiras() {
-    return new ArrayList<Carteira>(this.carteiras);
+  public List<Instituicao> getCarteiras() {
+    return new ArrayList<Instituicao>(this.carteiras);
   }
 
-  public void addCarteira(Carteira carteira) {
+  public void addCarteira(Instituicao carteira) {
     this.carteiras.add(carteira);
   }
 

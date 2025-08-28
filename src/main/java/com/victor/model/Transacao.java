@@ -20,6 +20,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
@@ -48,7 +49,12 @@ public class Transacao {
   @NotNull
   @Column(nullable = false)
   @Convert(converter = TipoTransacaoConverter.class)
-  private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
+  private TipoTransacao tipoTransacao; // 'C' para crédito, 'D' para débito
+
+  @NotNull
+  @Positive
+  @Column(nullable = false)
+  private Integer parcelas = 1;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "idUsuario", nullable = false)
@@ -56,9 +62,9 @@ public class Transacao {
   private Usuario usuario;
 
   @ManyToOne(optional = true)
-  @JoinColumn(name = "idCarteira")
+  @JoinColumn(name = "idConta")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private Carteira carteira;
+  private Conta conta;
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "idCategoria")
@@ -97,12 +103,20 @@ public class Transacao {
     this.dataTransacao = dataTransacao;
   }
 
-  public TipoTransacao getTipo() {
-    return tipo;
+  public TipoTransacao getTipoTransacao() {
+    return tipoTransacao;
   }
 
-  public void setTipo(@NotNull TipoTransacao tipo) {
-    this.tipo = tipo;
+  public void setTipoTransacao(@NotNull TipoTransacao tipoTransacao) {
+    this.tipoTransacao = tipoTransacao;
+  }
+
+  public Integer getParcelas() {
+    return parcelas;
+  }
+
+  public void setParcelas(@NotNull @Positive Integer parcelas) {
+    this.parcelas = parcelas;
   }
 
   public Usuario getUsuario() {
@@ -113,12 +127,12 @@ public class Transacao {
     this.usuario = usuario;
   }
 
-  public Carteira getCarteira() {
-    return carteira;
+  public Conta getConta() {
+    return conta;
   }
 
-  public void setCarteira(Carteira carteira) {
-    this.carteira = carteira;
+  public void setConta(Conta conta) {
+    this.conta = conta;
   }
 
   public Categoria getCategoria() {

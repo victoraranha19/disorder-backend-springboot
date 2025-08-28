@@ -50,7 +50,7 @@ public class TransacaoService {
           recordFound.setDescricao(transacaoDTO.descricao());
           recordFound.setValor(transacaoDTO.valor());
           recordFound.setDataTransacao(transacaoDTO.dataTransacao());
-          recordFound.setTipo(transacao.getTipo());
+          recordFound.setTipoTransacao(transacao.getTipoTransacao());
           return transacaoRepository.save(recordFound);
         })
         .map(TransacaoMapper::toDTO)

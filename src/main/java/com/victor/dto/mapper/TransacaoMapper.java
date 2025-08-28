@@ -14,7 +14,7 @@ public class TransacaoMapper {
     }
 
     return new TransacaoDTO(transacao.getIdTransacao(), transacao.getDescricao(), transacao.getValor(),
-        transacao.getDataTransacao(), transacao.getTipo().getValue());
+        transacao.getDataTransacao(), transacao.getTipoTransacao().getValue(), transacao.getParcelas());
   }
 
   public static Transacao toEntity(TransacaoDTO transacaoDTO) {
@@ -30,19 +30,9 @@ public class TransacaoMapper {
     transacao.setDescricao(transacaoDTO.descricao());
     transacao.setValor(transacaoDTO.valor());
     transacao.setDataTransacao(transacaoDTO.dataTransacao());
-    transacao.setTipo(convertTipoTransacaoValue(transacaoDTO.tipo()));
+    transacao.setTipoTransacao(TipoTransacao.convertTipoTransacaoValue(transacaoDTO.tipo()));
+    transacao.setParcelas(transacaoDTO.parcelas());
 
     return transacao;
-  }
-
-  public static TipoTransacao convertTipoTransacaoValue(String value) {
-    if (value == null) {
-      return null;
-    }
-    return switch (value) {
-      case "D" -> TipoTransacao.DEBITO;
-      case "C" -> TipoTransacao.CREDITO;
-      default -> throw new IllegalArgumentException("Tipo de Transação inválido: " + value);
-    };
   }
 }

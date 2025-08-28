@@ -47,10 +47,10 @@ public class CategoriaService {
     return categoriaRepository.findById(id)
         .map((recordFound) -> {
           Categoria categoria = CategoriaMapper.toEntity(categoriaDTO);
-          recordFound.setTitulo(categoriaDTO.titulo());
+          recordFound.setNome(categoriaDTO.nome());
           recordFound.setValorPlanejado(categoriaDTO.valorPlanejado());
-          recordFound.getTransacoes().clear();
-          categoria.getTransacoes().forEach(recordFound.getTransacoes()::add);
+          recordFound.limparTransacoes();
+          categoria.getTransacoes().forEach(recordFound::addTransacao);
           return categoriaRepository.save(recordFound);
         })
         .map(CategoriaMapper::toDTO)

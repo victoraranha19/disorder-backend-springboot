@@ -1,14 +1,9 @@
 package com.victor.dto.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.victor.dto.CategoriaDTO;
-import com.victor.dto.TransacaoDTO;
 import com.victor.model.Categoria;
-import com.victor.model.Transacao;
 
 @Component
 public class CategoriaMapper {
@@ -17,13 +12,7 @@ public class CategoriaMapper {
       return null;
     }
 
-    List<TransacaoDTO> transacoesDTO = categoria.getTransacoes()
-        .stream()
-        .map(TransacaoMapper::toDTO)
-        .collect(Collectors.toList());
-
-    return new CategoriaDTO(categoria.getIdCategoria(), categoria.getTitulo(), categoria.getValorPlanejado(),
-        transacoesDTO);
+    return new CategoriaDTO(categoria.getIdCategoria(), categoria.getNome(), categoria.getValorPlanejado());
   }
 
   public static Categoria toEntity(CategoriaDTO categoriaDTO) {
@@ -36,15 +25,8 @@ public class CategoriaMapper {
       categoria.setIdCategoria(categoriaDTO.id());
     }
 
-    categoria.setTitulo(categoriaDTO.titulo());
+    categoria.setNome(categoriaDTO.nome());
     categoria.setValorPlanejado(categoriaDTO.valorPlanejado());
-
-    categoria.getTransacoes().clear();
-    categoriaDTO.transacoes().forEach(transacaoDTO -> {
-      Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
-      transacao.setCategoria(categoria);
-      categoria.getTransacoes().add(transacao);
-    });
 
     return categoria;
   }
