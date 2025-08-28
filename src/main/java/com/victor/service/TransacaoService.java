@@ -21,38 +21,36 @@ import jakarta.validation.constraints.Positive;
 public class TransacaoService {
 
   private final TransacaoRepository transacaoRepository;
-  private final TransacaoMapper transacaoMapper;
 
-  public TransacaoService(TransacaoRepository transacaoRepository, TransacaoMapper transacaoMapper) {
+  public TransacaoService(TransacaoRepository transacaoRepository) {
     this.transacaoRepository = transacaoRepository;
-    this.transacaoMapper = transacaoMapper;
   }
 
   public List<TransacaoDTO> listarTransacoes() {
     return transacaoRepository.findAll()
         .stream()
-        .map(transacaoMapper::toDTO)
+        .map(TransacaoMapper::toDTO)
         .collect(Collectors.toList());
   }
 
   public TransacaoDTO transacaoPorId(@NotNull @Positive Long id) {
     return transacaoRepository.findById(id)
-        .map(transacaoMapper::toDTO)
+        .map(TransacaoMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public TransacaoDTO criarTransacao(@Valid @NotNull TransacaoDTO transacaoDTO) {
-    return transacaoMapper.toDTO(transacaoRepository.save(transacaoMapper.toEntity(transacaoDTO)));
+    return TransacaoMapper.toDTO(transacaoRepository.save(TransacaoMapper.toEntity(transacaoDTO)));
   }
 
   public TransacaoDTO atualizarTransacao(@NotNull @Positive Long id, @Valid @NotNull TransacaoDTO transacaoDTO) {
     return transacaoRepository.findById(id)
         .map((recordFound) -> {
-          Transacao transacao = transacaoMapper.toEntity(transacaoDTO);
-          transacao.setId(recordFound.getId());
+          Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
+          transacao.setIdTransacao(recordFound.getIdTransacao());
           return transacaoRepository.save(transacao);
         })
-        .map(transacaoMapper::toDTO)
+        .map(TransacaoMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 

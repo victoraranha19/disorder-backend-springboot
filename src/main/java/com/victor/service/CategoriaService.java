@@ -21,38 +21,36 @@ import jakarta.validation.constraints.Positive;
 public class CategoriaService {
 
   private final CategoriaRepository categoriaRepository;
-  private final CategoriaMapper categoriaMapper;
 
-  public CategoriaService(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
+  public CategoriaService(CategoriaRepository categoriaRepository) {
     this.categoriaRepository = categoriaRepository;
-    this.categoriaMapper = categoriaMapper;
   }
 
   public List<CategoriaDTO> listarCategorias() {
     return categoriaRepository.findAll()
         .stream()
-        .map(categoriaMapper::toDTO)
+        .map(CategoriaMapper::toDTO)
         .collect(Collectors.toList());
   }
 
   public CategoriaDTO categoriaPorId(@NotNull @Positive Long id) {
     return categoriaRepository.findById(id)
-        .map(categoriaMapper::toDTO)
+        .map(CategoriaMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public CategoriaDTO criarCategoria(@Valid @NotNull CategoriaDTO categoriaDTO) {
-    return categoriaMapper.toDTO(categoriaRepository.save(categoriaMapper.toEntity(categoriaDTO)));
+    return CategoriaMapper.toDTO(categoriaRepository.save(CategoriaMapper.toEntity(categoriaDTO)));
   }
 
   public CategoriaDTO atualizarCategoria(@NotNull @Positive Long id, @Valid @NotNull CategoriaDTO categoriaDTO) {
     return categoriaRepository.findById(id)
         .map((recordFound) -> {
-          Categoria categoria = categoriaMapper.toEntity(categoriaDTO);
-          categoria.setId(recordFound.getId());
+          Categoria categoria = CategoriaMapper.toEntity(categoriaDTO);
+          categoria.setIdCategoria(recordFound.getIdCategoria());
           return categoriaRepository.save(categoria);
         })
-        .map(categoriaMapper::toDTO)
+        .map(CategoriaMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 

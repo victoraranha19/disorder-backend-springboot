@@ -6,6 +6,7 @@ import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.victor.enums.TipoTransacao;
 import com.victor.enums.converters.TipoTransacaoConverter;
 
@@ -15,6 +16,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -28,7 +31,7 @@ public class Transacao {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  private Long idTransacao;
 
   @NotNull
   @Length(max = 255)
@@ -49,13 +52,18 @@ public class Transacao {
   @Convert(converter = TipoTransacaoConverter.class)
   private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
 
-  @Column()
-  private Integer idCategoria;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "idUsuario", nullable = false)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Usuario usuario;
 
-  @Column()
-  private Integer idCarteira;
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "idCarteira")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Carteira carteira;
 
-  @NotNull
-  @Column(nullable = false)
-  private Integer idUsuario;
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "idCategoria")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Categoria categoria;
 }

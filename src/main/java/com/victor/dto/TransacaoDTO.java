@@ -12,8 +12,5 @@ public record TransacaoDTO(
         @NotNull @Length(max = 255) String descricao,
         @NotNull @PositiveOrZero Double valor,
         @NotNull Date dataTransacao,
-        @NotNull String tipo,
-        Integer idCategoria,
-        Integer idCarteira) {
-
+        @NotNull String tipo) {
 }

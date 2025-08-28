@@ -1,5 +1,7 @@
 package com.victor.dto;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ public record CarteiraDTO(
     @NotNull @PositiveOrZero Double contaCorrente,
     @NotNull @PositiveOrZero Double contaPoupanca,
     @NotNull @PositiveOrZero Double contaInvestimento,
-    @NotNull @PositiveOrZero Double limiteCreditoTotal) {
+    @NotNull @PositiveOrZero Double limiteCreditoTotal,
+    List<TransacaoDTO> transacoes) {
 
 }

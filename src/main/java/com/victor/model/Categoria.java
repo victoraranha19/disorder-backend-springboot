@@ -1,14 +1,22 @@
 package com.victor.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +31,7 @@ public class Categoria {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  private Long idCategoria;
 
   @NotBlank
   @Length(max = 100)
@@ -35,7 +43,11 @@ public class Categoria {
   @Column(nullable = false)
   private Double valorPlanejado;
 
-  @NotNull
-  @Column(nullable = false)
-  private Integer idUsuario;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "idUsuario", nullable = false)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Usuario usuario;
+
+  @OneToMany(mappedBy = "categoria")
+  private List<Transacao> transacoes = new ArrayList<>();
 }

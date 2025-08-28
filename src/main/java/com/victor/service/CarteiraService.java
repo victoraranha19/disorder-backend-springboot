@@ -21,38 +21,36 @@ import jakarta.validation.constraints.Positive;
 public class CarteiraService {
 
   private final CarteiraRepository carteiraRepository;
-  private final CarteiraMapper carteiraMapper;
 
-  public CarteiraService(CarteiraRepository carteiraRepository, CarteiraMapper carteiraMapper) {
+  public CarteiraService(CarteiraRepository carteiraRepository) {
     this.carteiraRepository = carteiraRepository;
-    this.carteiraMapper = carteiraMapper;
   }
 
   public List<CarteiraDTO> listarCarteiras() {
     return carteiraRepository.findAll()
         .stream()
-        .map(carteiraMapper::toDTO)
+        .map(CarteiraMapper::toDTO)
         .collect(Collectors.toList());
   }
 
   public CarteiraDTO carteiraPorId(@NotNull @Positive Long id) {
     return carteiraRepository.findById(id)
-        .map(carteiraMapper::toDTO)
+        .map(CarteiraMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public CarteiraDTO criarCarteira(@Valid @NotNull CarteiraDTO carteiraDTO) {
-    return carteiraMapper.toDTO(carteiraRepository.save(carteiraMapper.toEntity(carteiraDTO)));
+    return CarteiraMapper.toDTO(carteiraRepository.save(CarteiraMapper.toEntity(carteiraDTO)));
   }
 
   public CarteiraDTO atualizarCarteira(@NotNull @Positive Long id, @Valid @NotNull CarteiraDTO carteiraDTO) {
     return carteiraRepository.findById(id)
         .map((recordFound) -> {
-          Carteira carteira = carteiraMapper.toEntity(carteiraDTO);
-          carteira.setId(recordFound.getId());
+          Carteira carteira = CarteiraMapper.toEntity(carteiraDTO);
+          carteira.setIdCarteira(recordFound.getIdCarteira());
           return carteiraRepository.save(carteira);
         })
-        .map(carteiraMapper::toDTO)
+        .map(CarteiraMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 

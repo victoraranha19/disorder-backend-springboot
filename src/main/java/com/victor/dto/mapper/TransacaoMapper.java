@@ -1,40 +1,41 @@
 package com.victor.dto.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.victor.dto.TransacaoDTO;
 import com.victor.enums.TipoTransacao;
 import com.victor.model.Transacao;
 
+@Component
 public class TransacaoMapper {
-  public TransacaoDTO toDTO(Transacao transacao) {
+  public static TransacaoDTO toDTO(Transacao transacao) {
     if (transacao == null) {
       return null;
     }
 
-    return new TransacaoDTO(transacao.getId(), transacao.getDescricao(), transacao.getValor(),
-        transacao.getDataTransacao(), transacao.getTipo().getValue(), transacao.getIdCategoria(),
-        transacao.getIdCarteira());
+    return new TransacaoDTO(transacao.getIdTransacao(), transacao.getDescricao(), transacao.getValor(),
+        transacao.getDataTransacao(), transacao.getTipo().getValue());
   }
 
-  public Transacao toEntity(TransacaoDTO transacaoDTO) {
+  public static Transacao toEntity(TransacaoDTO transacaoDTO) {
     if (transacaoDTO == null) {
       return null;
     }
 
     Transacao transacao = new Transacao();
     if (transacaoDTO.id() != null) {
-      transacao.setId(transacaoDTO.id());
+      transacao.setIdTransacao(transacaoDTO.id());
     }
+
     transacao.setDescricao(transacaoDTO.descricao());
     transacao.setValor(transacaoDTO.valor());
     transacao.setDataTransacao(transacaoDTO.dataTransacao());
     transacao.setTipo(convertTipoTransacaoValue(transacaoDTO.tipo()));
-    transacao.setIdCategoria(transacaoDTO.idCategoria());
-    transacao.setIdCarteira(transacaoDTO.idCarteira());
-    transacao.setIdUsuario(0);
+
     return transacao;
   }
 
-  public TipoTransacao convertTipoTransacaoValue(String value) {
+  public static TipoTransacao convertTipoTransacaoValue(String value) {
     if (value == null) {
       return null;
     }

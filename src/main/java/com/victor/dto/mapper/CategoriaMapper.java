@@ -1,29 +1,50 @@
 package com.victor.dto.mapper;
 
-import com.victor.dto.CategoriaDTO;
-import com.victor.model.Categoria;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
+import com.victor.dto.CategoriaDTO;
+import com.victor.dto.TransacaoDTO;
+import com.victor.model.Categoria;
+import com.victor.model.Transacao;
+
+@Component
 public class CategoriaMapper {
-  public CategoriaDTO toDTO(Categoria categoria) {
+  public static CategoriaDTO toDTO(Categoria categoria) {
     if (categoria == null) {
       return null;
     }
 
-    return new CategoriaDTO(categoria.getId(), categoria.getTitulo(), categoria.getValorPlanejado());
+    List<TransacaoDTO> transacoesDTO = categoria.getTransacoes()
+        .stream()
+        .map(TransacaoMapper::toDTO)
+        .collect(Collectors.toList());
+
+    return new CategoriaDTO(categoria.getIdCategoria(), categoria.getTitulo(), categoria.getValorPlanejado(),
+        transacoesDTO);
   }
 
-  public Categoria toEntity(CategoriaDTO categoriaDTO) {
+  public static Categoria toEntity(CategoriaDTO categoriaDTO) {
     if (categoriaDTO == null) {
       return null;
     }
 
     Categoria categoria = new Categoria();
     if (categoriaDTO.id() != null) {
-      categoria.setId(categoriaDTO.id());
+      categoria.setIdCategoria(categoriaDTO.id());
     }
+
     categoria.setTitulo(categoriaDTO.titulo());
     categoria.setValorPlanejado(categoriaDTO.valorPlanejado());
-    categoria.setIdUsuario(0);
+
+    List<Transacao> transacoes = categoriaDTO.transacoes()
+        .stream()
+        .map(TransacaoMapper::toEntity)
+        .collect(Collectors.toList());
+    categoria.setTransacoes(transacoes);
+
     return categoria;
   }
 }

@@ -21,37 +21,35 @@ import jakarta.validation.constraints.Positive;
 public class UsuarioService {
 
   private final UsuarioRepository usuarioRepository;
-  private final UsuarioMapper usuarioMapper;
 
-  public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+  public UsuarioService(UsuarioRepository usuarioRepository) {
     this.usuarioRepository = usuarioRepository;
-    this.usuarioMapper = usuarioMapper;
   }
 
   public List<UsuarioDTO> listarUsuarios() {
     return usuarioRepository.findAll().stream()
-        .map(usuarioMapper::toDTO)
+        .map(UsuarioMapper::toDTO)
         .collect(Collectors.toList());
   }
 
   public UsuarioDTO usuarioPorId(@NotNull @Positive Long id) {
     return usuarioRepository.findById(id)
-        .map(usuarioMapper::toDTO)
+        .map(UsuarioMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public UsuarioDTO criarUsuario(@Valid @NotNull UsuarioDTO usuarioDTO) {
-    return usuarioMapper.toDTO(usuarioRepository.save(usuarioMapper.toEntity(usuarioDTO)));
+    return UsuarioMapper.toDTO(usuarioRepository.save(UsuarioMapper.toEntity(usuarioDTO)));
   }
 
   public UsuarioDTO atualizarUsuario(@NotNull @Positive Long id, @Valid @NotNull UsuarioDTO usuarioDTO) {
     return usuarioRepository.findById(id)
         .map((recordFound) -> {
-          Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
-          usuario.setId(recordFound.getId());
+          Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
+          usuario.setIdUsuario(recordFound.getIdUsuario());
           return usuarioRepository.save(usuario);
         })
-        .map(usuarioMapper::toDTO)
+        .map(UsuarioMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
