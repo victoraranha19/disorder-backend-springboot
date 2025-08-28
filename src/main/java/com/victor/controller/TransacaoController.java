@@ -1,13 +1,17 @@
 package com.victor.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.victor.dto.TransacaoDTO;
+import com.victor.dto.TransacaoPageDTO;
 import com.victor.service.TransacaoService;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,8 +32,9 @@ public class TransacaoController {
   }
 
   @GetMapping
-  public List<TransacaoDTO> listarTransacoes() {
-    return transacaoService.listarTransacoes();
+  public TransacaoPageDTO listarTransacoes(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
+      @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina) {
+    return transacaoService.listarTransacoes(pagina, itensPorPagina);
   }
 
   @GetMapping("/{id}")
