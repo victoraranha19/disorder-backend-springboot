@@ -47,8 +47,11 @@ public class CategoriaService {
     return categoriaRepository.findById(id)
         .map((recordFound) -> {
           Categoria categoria = CategoriaMapper.toEntity(categoriaDTO);
-          categoria.setIdCategoria(recordFound.getIdCategoria());
-          return categoriaRepository.save(categoria);
+          recordFound.setTitulo(categoriaDTO.titulo());
+          recordFound.setValorPlanejado(categoriaDTO.valorPlanejado());
+          recordFound.getTransacoes().clear();
+          categoria.getTransacoes().forEach(recordFound.getTransacoes()::add);
+          return categoriaRepository.save(recordFound);
         })
         .map(CategoriaMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));

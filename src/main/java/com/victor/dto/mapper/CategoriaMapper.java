@@ -39,11 +39,12 @@ public class CategoriaMapper {
     categoria.setTitulo(categoriaDTO.titulo());
     categoria.setValorPlanejado(categoriaDTO.valorPlanejado());
 
-    List<Transacao> transacoes = categoriaDTO.transacoes()
-        .stream()
-        .map(TransacaoMapper::toEntity)
-        .collect(Collectors.toList());
-    categoria.setTransacoes(transacoes);
+    categoria.getTransacoes().clear();
+    categoriaDTO.transacoes().forEach(transacaoDTO -> {
+      Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
+      transacao.setCategoria(categoria);
+      categoria.getTransacoes().add(transacao);
+    });
 
     return categoria;
   }

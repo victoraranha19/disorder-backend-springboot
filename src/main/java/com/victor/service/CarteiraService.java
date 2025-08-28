@@ -47,8 +47,14 @@ public class CarteiraService {
     return carteiraRepository.findById(id)
         .map((recordFound) -> {
           Carteira carteira = CarteiraMapper.toEntity(carteiraDTO);
-          carteira.setIdCarteira(recordFound.getIdCarteira());
-          return carteiraRepository.save(carteira);
+          recordFound.setTitulo(carteiraDTO.titulo());
+          recordFound.setContaCorrente(carteiraDTO.contaCorrente());
+          recordFound.setContaInvestimento(carteiraDTO.contaInvestimento());
+          recordFound.setContaPoupanca(carteiraDTO.contaPoupanca());
+          recordFound.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
+          recordFound.getTransacoes().clear();
+          carteira.getTransacoes().forEach(recordFound.getTransacoes()::add);
+          return carteiraRepository.save(recordFound);
         })
         .map(CarteiraMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));

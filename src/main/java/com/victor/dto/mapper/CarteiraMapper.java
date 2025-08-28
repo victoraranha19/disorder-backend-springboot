@@ -43,11 +43,12 @@ public class CarteiraMapper {
     carteira.setContaInvestimento(carteiraDTO.contaInvestimento());
     carteira.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
 
-    List<Transacao> transacoes = carteiraDTO.transacoes()
-        .stream()
-        .map(TransacaoMapper::toEntity)
-        .collect(Collectors.toList());
-    carteira.setTransacoes(transacoes);
+    carteira.getTransacoes().clear();
+    carteiraDTO.transacoes().forEach(transacaoDTO -> {
+      Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
+      transacao.setCarteira(carteira);
+      carteira.getTransacoes().add(transacao);
+    });
 
     return carteira;
   }

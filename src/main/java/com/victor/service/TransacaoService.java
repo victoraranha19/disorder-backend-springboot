@@ -47,8 +47,11 @@ public class TransacaoService {
     return transacaoRepository.findById(id)
         .map((recordFound) -> {
           Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
-          transacao.setIdTransacao(recordFound.getIdTransacao());
-          return transacaoRepository.save(transacao);
+          recordFound.setDescricao(transacaoDTO.descricao());
+          recordFound.setValor(transacaoDTO.valor());
+          recordFound.setDataTransacao(transacaoDTO.dataTransacao());
+          recordFound.setTipo(transacao.getTipo());
+          return transacaoRepository.save(recordFound);
         })
         .map(TransacaoMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));

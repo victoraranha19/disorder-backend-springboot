@@ -46,8 +46,22 @@ public class UsuarioService {
     return usuarioRepository.findById(id)
         .map((recordFound) -> {
           Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
-          usuario.setIdUsuario(recordFound.getIdUsuario());
-          return usuarioRepository.save(usuario);
+          recordFound.setUsername(usuarioDTO.username());
+          recordFound.setPassword(usuario.getPassword());
+          recordFound.setNomeCompleto(usuarioDTO.nomeCompleto());
+          recordFound.setEmail(usuarioDTO.email());
+          recordFound.setTelefone(usuarioDTO.telefone());
+          recordFound.setChavePix(usuarioDTO.chavePix());
+
+          recordFound.getTransacoes().clear();
+          usuario.getTransacoes().forEach(recordFound.getTransacoes()::add);
+          recordFound.getCarteiras().clear();
+          usuario.getCarteiras().forEach(recordFound.getCarteiras()::add);
+          recordFound.getCategorias().clear();
+          usuario.getCategorias().forEach(recordFound.getCategorias()::add);
+
+          recordFound.setIdAcessor(usuarioDTO.idAcessor());
+          return usuarioRepository.save(recordFound);
         })
         .map(UsuarioMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));

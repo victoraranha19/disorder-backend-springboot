@@ -57,23 +57,26 @@ public class UsuarioMapper {
     usuario.setTelefone(usuarioDTO.telefone());
     usuario.setChavePix(usuarioDTO.chavePix());
 
-    List<Carteira> carteiras = usuarioDTO.carteiras()
-        .stream()
-        .map(CarteiraMapper::toEntity)
-        .collect(Collectors.toList());
-    usuario.setCarteiras(carteiras);
+    usuario.getTransacoes().clear();
+    usuarioDTO.transacoes().forEach(transacaoDTO -> {
+      Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
+      transacao.setUsuario(usuario);
+      usuario.getTransacoes().add(transacao);
+    });
 
-    List<Categoria> categorias = usuarioDTO.categorias()
-        .stream()
-        .map(CategoriaMapper::toEntity)
-        .collect(Collectors.toList());
-    usuario.setCategorias(categorias);
+    usuario.getCarteiras().clear();
+    usuarioDTO.carteiras().forEach(carteiraDTO -> {
+      Carteira carteira = CarteiraMapper.toEntity(carteiraDTO);
+      carteira.setUsuario(usuario);
+      usuario.getCarteiras().add(carteira);
+    });
 
-    List<Transacao> transacoes = usuarioDTO.transacoes()
-        .stream()
-        .map(TransacaoMapper::toEntity)
-        .collect(Collectors.toList());
-    usuario.setTransacoes(transacoes);
+    usuario.getCategorias().clear();
+    usuarioDTO.categorias().forEach(categoriaDTO -> {
+      Categoria categoria = CategoriaMapper.toEntity(categoriaDTO);
+      categoria.setUsuario(usuario);
+      usuario.getCategorias().add(categoria);
+    });
 
     usuario.setIdAcessor(0);
     return usuario;
