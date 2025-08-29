@@ -1,5 +1,7 @@
 package com.victor.dto;
 
+import java.util.UUID;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.victor.enums.TipoTransacao;
@@ -10,9 +12,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record ContaDTO(
-    Long id,
-    @NotBlank @Length(max = 100) String nome,
-    @NotNull @PositiveOrZero Double valorConta,
-    @NotNull @ValueOfEnum(enumClass = TipoTransacao.class) String tipo) {
+        UUID id,
+        @NotBlank @Length(max = 100) String nome,
+        @NotNull @PositiveOrZero Double valorConta,
+        @NotNull @ValueOfEnum(enumClass = TipoTransacao.class) String tipo) {
 
 }

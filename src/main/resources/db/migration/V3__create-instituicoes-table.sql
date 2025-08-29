@@ -1,9 +1,8 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-CREATE TABLE IF NOT EXISTS categorias (
+CREATE TABLE IF NOT EXISTS instituicoes (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
-    valorPlanejado DECIMAL(10, 2) NOT NULL CHECK (valorMes >= 0),
     idUsuario UUID NOT NULL,
     ativo BOOLEAN DEFAULT TRUE,
 

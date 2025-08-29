@@ -1,6 +1,7 @@
 package com.victor.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CarteiraService {
         .collect(Collectors.toList());
   }
 
-  public InstituicaoDTO carteiraPorId(@NotNull @Positive Long id) {
+  public InstituicaoDTO carteiraPorId(@NotNull @Positive UUID id) {
     return instituicaoRepository.findById(id)
         .map(InstituicaoMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
@@ -43,7 +44,7 @@ public class CarteiraService {
     return InstituicaoMapper.toDTO(instituicaoRepository.save(InstituicaoMapper.toEntity(instituicaoDTO)));
   }
 
-  public InstituicaoDTO atualizarCarteira(@NotNull @Positive Long id, @Valid @NotNull InstituicaoDTO instituicaoDTO) {
+  public InstituicaoDTO atualizarCarteira(@NotNull @Positive UUID id, @Valid @NotNull InstituicaoDTO instituicaoDTO) {
     return instituicaoRepository.findById(id)
         .map((recordFound) -> {
           Instituicao carteira = InstituicaoMapper.toEntity(instituicaoDTO);
@@ -58,7 +59,7 @@ public class CarteiraService {
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public void deletarCarteira(@NotNull @Positive Long id) {
+  public void deletarCarteira(@NotNull @Positive UUID id) {
     instituicaoRepository.delete(instituicaoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }

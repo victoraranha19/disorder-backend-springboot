@@ -1,6 +1,7 @@
 package com.victor.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -39,7 +40,7 @@ public class TransacaoService {
         pageTransacoes.getTotalPages());
   }
 
-  public TransacaoDTO transacaoPorId(@NotNull @Positive Long id) {
+  public TransacaoDTO transacaoPorId(@NotNull @Positive UUID id) {
     return transacaoRepository.findById(id)
         .map(TransacaoMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
@@ -49,7 +50,7 @@ public class TransacaoService {
     return TransacaoMapper.toDTO(transacaoRepository.save(TransacaoMapper.toEntity(transacaoDTO)));
   }
 
-  public TransacaoDTO atualizarTransacao(@NotNull @Positive Long id, @Valid @NotNull TransacaoDTO transacaoDTO) {
+  public TransacaoDTO atualizarTransacao(@NotNull @Positive UUID id, @Valid @NotNull TransacaoDTO transacaoDTO) {
     return transacaoRepository.findById(id)
         .map((recordFound) -> {
           Transacao transacao = TransacaoMapper.toEntity(transacaoDTO);
@@ -63,7 +64,7 @@ public class TransacaoService {
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public void deletarTransacao(@NotNull @Positive Long id) {
+  public void deletarTransacao(@NotNull @Positive UUID id) {
     transacaoRepository.delete(transacaoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }

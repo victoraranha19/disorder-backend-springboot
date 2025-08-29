@@ -1,6 +1,7 @@
 package com.victor.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class CarteiraController {
   }
 
   @GetMapping("/{id}")
-  public InstituicaoDTO carteiraPorId(@PathVariable Long id) {
+  public InstituicaoDTO carteiraPorId(@PathVariable UUID id) {
     return carteiraService.carteiraPorId(id);
   }
 
@@ -44,13 +45,13 @@ public class CarteiraController {
   }
 
   @PutMapping("/{id}")
-  public InstituicaoDTO atualizarCarteira(@PathVariable Long id, @RequestBody InstituicaoDTO instituicaoDTO) {
+  public InstituicaoDTO atualizarCarteira(@PathVariable UUID id, @RequestBody InstituicaoDTO instituicaoDTO) {
     return carteiraService.atualizarCarteira(id, instituicaoDTO);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deletarCarteira(@PathVariable Long id) {
+  public void deletarCarteira(@PathVariable UUID id) {
     carteiraService.deletarCarteira(id);
   }
 }

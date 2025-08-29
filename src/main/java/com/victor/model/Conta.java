@@ -2,6 +2,7 @@ package com.victor.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
@@ -33,7 +34,7 @@ public class Conta {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  private UUID id;
 
   @NotBlank
   @Length(max = 100)
@@ -62,11 +63,11 @@ public class Conta {
   @OneToMany(mappedBy = "conta")
   private List<Transacao> transacoes = new ArrayList<>();
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long idConta) {
+  public void setId(UUID idConta) {
     this.id = idConta;
   }
 

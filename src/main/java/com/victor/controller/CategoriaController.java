@@ -1,6 +1,7 @@
 package com.victor.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class CategoriaController {
   }
 
   @GetMapping("/{id}")
-  public CategoriaDTO categoriaPorId(@PathVariable Long id) {
+  public CategoriaDTO categoriaPorId(@PathVariable UUID id) {
     return categoriaService.categoriaPorId(id);
   }
 
@@ -43,13 +44,13 @@ public class CategoriaController {
   }
 
   @PutMapping("/{id}")
-  public CategoriaDTO atualizarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoria) {
+  public CategoriaDTO atualizarCategoria(@PathVariable UUID id, @RequestBody CategoriaDTO categoria) {
     return categoriaService.atualizarCategoria(id, categoria);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deletarCategoria(@PathVariable Long id) {
+  public void deletarCategoria(@PathVariable UUID id) {
     categoriaService.deletarCategoria(id);
   }
 }

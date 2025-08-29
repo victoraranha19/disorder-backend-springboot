@@ -1,6 +1,7 @@
 package com.victor.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
@@ -31,7 +32,7 @@ public class Transacao {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  private UUID id;
 
   @NotNull
   @Length(max = 255)
@@ -76,11 +77,11 @@ public class Transacao {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Categoria categoria;
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long idTransacao) {
+  public void setId(UUID idTransacao) {
     this.id = idTransacao;
   }
 

@@ -13,6 +13,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +40,7 @@ public class TransacaoController {
   }
 
   @GetMapping("/{id}")
-  public TransacaoDTO transacaoPorId(@PathVariable Long id) {
+  public TransacaoDTO transacaoPorId(@PathVariable UUID id) {
     return transacaoService.transacaoPorId(id);
   }
 
@@ -49,13 +51,13 @@ public class TransacaoController {
   }
 
   @PutMapping("/{id}")
-  public TransacaoDTO atualizarTransacao(@PathVariable Long id, @RequestBody TransacaoDTO transacao) {
+  public TransacaoDTO atualizarTransacao(@PathVariable UUID id, @RequestBody TransacaoDTO transacao) {
     return transacaoService.atualizarTransacao(id, transacao);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deletarTransacao(@PathVariable Long id) {
+  public void deletarTransacao(@PathVariable UUID id) {
     transacaoService.deletarTransacao(id);
   }
 }

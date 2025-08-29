@@ -2,6 +2,7 @@ package com.victor.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
@@ -29,12 +30,12 @@ import jakarta.validation.constraints.NotNull;
 public class Instituicao {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @NotBlank
-  @Length(max = 100)
-  @Column(length = 100, nullable = false)
+  @Length(max = 50)
+  @Column(length = 50, nullable = false)
   private String nome;
 
   @NotNull
@@ -49,11 +50,11 @@ public class Instituicao {
   @OneToMany(mappedBy = "instituicao")
   private List<Conta> contas = new ArrayList<Conta>();
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long idCarteira) {
+  public void setId(UUID idCarteira) {
     this.id = idCarteira;
   }
 
@@ -61,8 +62,8 @@ public class Instituicao {
     return nome;
   }
 
-  public void setNome(@NotBlank @Length(max = 100) String titulo) {
-    this.nome = titulo;
+  public void setNome(@NotBlank @Length(max = 50) String nome) {
+    this.nome = nome;
   }
 
   public Usuario getUsuario() {
