@@ -37,8 +37,8 @@ public class Conta {
   private UUID id;
 
   @NotBlank
-  @Length(max = 100)
-  @Column(length = 100, nullable = false)
+  @Length(max = 50)
+  @Column(length = 50, nullable = false)
   private String nome;
 
   @NotNull

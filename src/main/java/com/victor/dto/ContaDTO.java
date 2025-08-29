@@ -12,9 +12,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record ContaDTO(
-        UUID id,
-        @NotBlank @Length(max = 100) String nome,
-        @NotNull @PositiveOrZero Double valorConta,
-        @NotNull @ValueOfEnum(enumClass = TipoTransacao.class) String tipo) {
+    UUID id,
+    @NotBlank @Length(max = 50) String nome,
+    @NotNull @PositiveOrZero Double valorConta,
+    @NotNull @ValueOfEnum(enumClass = TipoTransacao.class) String tipo) {
 
 }
