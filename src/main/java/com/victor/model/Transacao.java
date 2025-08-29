@@ -23,7 +23,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "transacoes")
@@ -40,7 +39,7 @@ public class Transacao {
   private String descricao;
 
   @NotNull
-  @PositiveOrZero
+  @Positive
   @Column(nullable = false)
   private Double valor;
 
@@ -97,7 +96,7 @@ public class Transacao {
     return valor;
   }
 
-  public void setValor(@NotNull @PositiveOrZero Double valor) {
+  public void setValor(@NotNull @Positive Double valor) {
     this.valor = valor;
   }
 

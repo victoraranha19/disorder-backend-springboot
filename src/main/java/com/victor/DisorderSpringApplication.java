@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
@@ -25,6 +26,15 @@ public class DisorderSpringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DisorderSpringApplication.class, args);
+	}
+
+	@Bean
+	@Profile("dev")
+	public FlywayMigrationStrategy cleanMigrateStrategy() {
+		return flyway -> {
+			flyway.repair();
+			flyway.migrate(); // Optionally, migrate after repair
+		};
 	}
 
 	@Bean
