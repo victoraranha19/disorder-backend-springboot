@@ -2,6 +2,7 @@ package com.victor.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
@@ -30,8 +31,8 @@ import jakarta.validation.constraints.NotNull;
 public class Usuario {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idUsuario;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @NotBlank
   @Length(max = 30)
@@ -88,12 +89,12 @@ public class Usuario {
   @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Categoria> categorias = new ArrayList<Categoria>();
 
-  public Long getIdUsuario() {
-    return idUsuario;
+  public UUID getId() {
+    return id;
   }
 
-  public void setIdUsuario(Long idUsuario) {
-    this.idUsuario = idUsuario;
+  public void setId(UUID idUsuario) {
+    this.id = idUsuario;
   }
 
   public String getUsername() {

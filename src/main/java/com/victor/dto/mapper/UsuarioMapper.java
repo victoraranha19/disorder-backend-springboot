@@ -12,7 +12,7 @@ public class UsuarioMapper {
       return null;
     }
 
-    return new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(), usuario.getNomeCompleto(),
+    return new UsuarioDTO(usuario.getId(), usuario.getUsername(), usuario.getNomeCompleto(),
         usuario.getEmail(), usuario.getTelefone(), usuario.getChavePix());
   }
 
@@ -23,7 +23,7 @@ public class UsuarioMapper {
 
     Usuario usuario = new Usuario();
     if (usuarioDTO.id() != null) {
-      usuario.setIdUsuario(usuarioDTO.id());
+      usuario.setId(usuarioDTO.id());
     }
     usuario.setUsername(usuarioDTO.username());
     usuario.setPassword("pass");

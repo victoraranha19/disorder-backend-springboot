@@ -13,7 +13,7 @@ public class ContaMapper {
       return null;
     }
 
-    return new ContaDTO(conta.getIdConta(), conta.getNome(), conta.getValorConta(),
+    return new ContaDTO(conta.getId(), conta.getNome(), conta.getValorConta(),
         conta.getTipo().getValue());
   }
 
@@ -24,7 +24,7 @@ public class ContaMapper {
 
     Conta conta = new Conta();
     if (contaDTO.id() != null) {
-      conta.setIdConta(contaDTO.id());
+      conta.setId(contaDTO.id());
     }
 
     conta.setNome(contaDTO.nome());

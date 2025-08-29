@@ -1,6 +1,7 @@
 package com.victor.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class UsuarioController {
   }
 
   @GetMapping("/{id}")
-  public UsuarioDTO usuarioPorId(@PathVariable Long id) {
+  public UsuarioDTO usuarioPorId(@PathVariable UUID id) {
     return usuarioService.usuarioPorId(id);
   }
 
@@ -43,13 +44,13 @@ public class UsuarioController {
   }
 
   @PutMapping("/{id}")
-  public UsuarioDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuario) {
+  public UsuarioDTO atualizarUsuario(@PathVariable UUID id, @RequestBody UsuarioDTO usuario) {
     return usuarioService.atualizarUsuario(id, usuario);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deletarUsuario(@PathVariable Long id) {
+  public void deletarUsuario(@PathVariable UUID id) {
     usuarioService.deletarUsuario(id);
   }
 }

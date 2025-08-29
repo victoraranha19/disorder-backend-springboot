@@ -31,7 +31,7 @@ public class Transacao {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idTransacao;
+  private Long id;
 
   @NotNull
   @Length(max = 255)
@@ -76,12 +76,12 @@ public class Transacao {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Categoria categoria;
 
-  public Long getIdTransacao() {
-    return idTransacao;
+  public Long getId() {
+    return id;
   }
 
-  public void setIdTransacao(Long idTransacao) {
-    this.idTransacao = idTransacao;
+  public void setId(Long idTransacao) {
+    this.id = idTransacao;
   }
 
   public String getDescricao() {

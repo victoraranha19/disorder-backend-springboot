@@ -30,7 +30,7 @@ public class Instituicao {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idInstituicao;
+  private Long id;
 
   @NotBlank
   @Length(max = 100)
@@ -49,12 +49,12 @@ public class Instituicao {
   @OneToMany(mappedBy = "instituicao")
   private List<Conta> contas = new ArrayList<Conta>();
 
-  public Long getIdInstituicao() {
-    return idInstituicao;
+  public Long getId() {
+    return id;
   }
 
-  public void setIdInstituicao(Long idCarteira) {
-    this.idInstituicao = idCarteira;
+  public void setId(Long idCarteira) {
+    this.id = idCarteira;
   }
 
   public String getNome() {

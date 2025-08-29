@@ -33,7 +33,7 @@ public class Conta {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idConta;
+  private Long id;
 
   @NotBlank
   @Length(max = 100)
@@ -62,12 +62,12 @@ public class Conta {
   @OneToMany(mappedBy = "conta")
   private List<Transacao> transacoes = new ArrayList<>();
 
-  public Long getIdConta() {
-    return idConta;
+  public Long getId() {
+    return id;
   }
 
-  public void setIdConta(Long idConta) {
-    this.idConta = idConta;
+  public void setId(Long idConta) {
+    this.id = idConta;
   }
 
   public String getNome() {

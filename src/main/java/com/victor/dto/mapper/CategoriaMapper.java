@@ -12,7 +12,7 @@ public class CategoriaMapper {
       return null;
     }
 
-    return new CategoriaDTO(categoria.getIdCategoria(), categoria.getNome(), categoria.getValorPlanejado());
+    return new CategoriaDTO(categoria.getId(), categoria.getNome(), categoria.getValorPlanejado());
   }
 
   public static Categoria toEntity(CategoriaDTO categoriaDTO) {
@@ -22,7 +22,7 @@ public class CategoriaMapper {
 
     Categoria categoria = new Categoria();
     if (categoriaDTO.id() != null) {
-      categoria.setIdCategoria(categoriaDTO.id());
+      categoria.setId(categoriaDTO.id());
     }
 
     categoria.setNome(categoriaDTO.nome());

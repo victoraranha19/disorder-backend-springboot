@@ -13,7 +13,7 @@ public class TransacaoMapper {
       return null;
     }
 
-    return new TransacaoDTO(transacao.getIdTransacao(), transacao.getDescricao(), transacao.getValor(),
+    return new TransacaoDTO(transacao.getId(), transacao.getDescricao(), transacao.getValor(),
         transacao.getDataTransacao(), transacao.getTipo().getValue(), transacao.getParcelas());
   }
 
@@ -24,7 +24,7 @@ public class TransacaoMapper {
 
     Transacao transacao = new Transacao();
     if (transacaoDTO.id() != null) {
-      transacao.setIdTransacao(transacaoDTO.id());
+      transacao.setId(transacaoDTO.id());
     }
 
     transacao.setDescricao(transacaoDTO.descricao());

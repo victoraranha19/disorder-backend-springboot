@@ -1,6 +1,7 @@
 package com.victor.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UsuarioService {
         .collect(Collectors.toList());
   }
 
-  public UsuarioDTO usuarioPorId(@NotNull @Positive Long id) {
+  public UsuarioDTO usuarioPorId(@NotNull @Positive UUID id) {
     return usuarioRepository.findById(id)
         .map(UsuarioMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
@@ -41,7 +42,7 @@ public class UsuarioService {
     return UsuarioMapper.toDTO(usuarioRepository.save(UsuarioMapper.toEntity(usuarioDTO)));
   }
 
-  public UsuarioDTO atualizarUsuario(@NotNull @Positive Long id, @Valid @NotNull UsuarioDTO usuarioDTO) {
+  public UsuarioDTO atualizarUsuario(@NotNull @Positive UUID id, @Valid @NotNull UsuarioDTO usuarioDTO) {
     return usuarioRepository.findById(id)
         .map((recordFound) -> {
           recordFound.setUsername(usuarioDTO.username());
@@ -55,7 +56,7 @@ public class UsuarioService {
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public void deletarUsuario(@NotNull @Positive Long id) {
+  public void deletarUsuario(@NotNull @Positive UUID id) {
     usuarioRepository.delete(usuarioRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }

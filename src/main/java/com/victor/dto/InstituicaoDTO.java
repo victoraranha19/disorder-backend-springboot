@@ -8,8 +8,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
-public record InstituicaoDTO(Long id,
-    @NotBlank @Length(max = 100) String nome,
-    @NotEmpty @Valid List<ContaDTO> contas) {
+public record InstituicaoDTO(
+        Long id,
+        @NotBlank @Length(max = 100) String nome,
+        @NotEmpty @Valid List<ContaDTO> contas) {
 
 }

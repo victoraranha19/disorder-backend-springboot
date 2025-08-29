@@ -30,11 +30,11 @@ public class Categoria {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long idCategoria;
+  private Long id;
 
   @NotBlank
-  @Length(max = 100)
-  @Column(length = 100, nullable = false)
+  @Length(max = 50)
+  @Column(length = 50, nullable = false)
   private String nome;
 
   @NotNull
@@ -54,19 +54,19 @@ public class Categoria {
   @OneToMany(mappedBy = "categoria")
   private List<Transacao> transacoes = new ArrayList<>();
 
-  public Long getIdCategoria() {
-    return idCategoria;
+  public Long getId() {
+    return id;
   }
 
-  public void setIdCategoria(Long idCategoria) {
-    this.idCategoria = idCategoria;
+  public void setId(Long idCategoria) {
+    this.id = idCategoria;
   }
 
   public String getNome() {
     return nome;
   }
 
-  public void setNome(@NotBlank @Length(max = 100) String titulo) {
+  public void setNome(@NotBlank @Length(max = 50) String titulo) {
     this.nome = titulo;
   }
 

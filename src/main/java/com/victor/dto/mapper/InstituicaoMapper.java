@@ -22,7 +22,7 @@ public class InstituicaoMapper {
         .map(ContaMapper::toDTO)
         .collect(Collectors.toList());
 
-    return new InstituicaoDTO(instituicao.getIdInstituicao(), instituicao.getNome(), contasDTO);
+    return new InstituicaoDTO(instituicao.getId(), instituicao.getNome(), contasDTO);
   }
 
   public static Instituicao toEntity(InstituicaoDTO instituicaoDTO) {
@@ -32,7 +32,7 @@ public class InstituicaoMapper {
 
     Instituicao instituicao = new Instituicao();
     if (instituicaoDTO.id() != null) {
-      instituicao.setIdInstituicao(instituicaoDTO.id());
+      instituicao.setId(instituicaoDTO.id());
     }
 
     instituicao.setNome(instituicaoDTO.nome());

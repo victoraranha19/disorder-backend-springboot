@@ -6,8 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public record CategoriaDTO(Long id,
-    @NotBlank @Length(max = 100) String nome,
-    @NotNull @PositiveOrZero Double valorPlanejado) {
+public record CategoriaDTO(
+                Long id,
+                @NotBlank @Length(max = 50) String nome,
+                @NotNull @PositiveOrZero Double valorPlanejado) {
 
 }
