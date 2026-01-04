@@ -5,9 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 
-public record CategoriaDTO(
+public record CarteiraDTO(
         Integer id,
         @NotBlank @Length(max = 50) String titulo,
-        @NotNull @PositiveOrZero Double valorPlanejado) {
+        @NotNull @PositiveOrZero Double contaCorrente,
+        @NotNull @PositiveOrZero Double contaPoupanca,
+        @NotNull @PositiveOrZero Double contaInvestimento,
+        @NotNull @PositiveOrZero Double limiteCreditoTotal) {
 
 }

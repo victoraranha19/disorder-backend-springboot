@@ -1,203 +1,207 @@
 package com.victor.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.SoftDeleteType;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
 public class Usuario {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-  @NotBlank
-  @Length(max = 30)
-  @Column(length = 30, unique = true, nullable = false)
-  private String username;
+    @NotBlank
+    @Length(max = 30)
+    @Column(length = 30, unique = true, nullable = false)
+    private String username;
 
-  @NotBlank
-  @Length(max = 30)
-  @Column(length = 30, nullable = false)
-  private String password;
+    @NotBlank
+    @Length(max = 30)
+    @Column(length = 30, nullable = false)
+    private String senha;
 
-  @NotBlank
-  @Length(min = 3, max = 100)
-  @Column(length = 100, nullable = false)
-  private String nomeCompleto;
+    @NotBlank
+    @Length(min = 3, max = 100)
+    @Column(length = 100, nullable = false)
+    private String nomeCompleto;
 
-  @NotBlank
-  @Length(max = 100)
-  @Email
-  @Column(length = 100, unique = true, nullable = false)
-  private String email;
+    @NotBlank
+    @Length(max = 100)
+    @Email
+    @Column(length = 100, unique = true, nullable = false)
+    private String email;
 
-  @Length(max = 20)
-  @Column(length = 20)
-  private String telefone;
+    @NotNull
+    @Length(max = 20)
+    @Column(length = 20)
+    private String telefone;
 
-  @Length(max = 255)
-  @Column(length = 255)
-  private String chavePix;
+    @NotNull
+    @Length(max = 255)
+    @Column(length = 255)
+    private String chavePix;
 
-  @Valid
-  @ManyToOne(optional = true)
-  @JoinColumn(name = "idAcessor")
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private Usuario acessor;
+    @NotNull
+    @Length(max = 255)
+    @Column(length = 255)
+    private String papel;
 
-  @NotNull
-  @Valid
-  @OneToMany(mappedBy = "acessor", fetch = FetchType.LAZY)
-  private List<Usuario> clientes = new ArrayList<Usuario>();
+    @Valid
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idAcessor")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Usuario acessor;
 
-  @NotNull
-  @Valid
-  @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Transacao> transacoes = new ArrayList<Transacao>();
+    @NotNull
+    @Valid
+    @OneToMany(mappedBy = "acessor", fetch = FetchType.LAZY)
+    private List<Usuario> clientes = new ArrayList<>();
 
-  @NotNull
-  @Valid
-  @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Instituicao> carteiras = new ArrayList<Instituicao>();
+    @NotNull
+    @Valid
+    @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Transacao> transacoes = new ArrayList<>();
 
-  @NotNull
-  @Valid
-  @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Categoria> categorias = new ArrayList<Categoria>();
+    @NotNull
+    @Valid
+    @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Carteira> carteiras = new ArrayList<>();
 
-  public UUID getId() {
-    return id;
-  }
+    @NotNull
+    @Valid
+    @OneToMany(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Categoria> categorias = new ArrayList<>();
 
-  public void setId(UUID idUsuario) {
-    this.id = idUsuario;
-  }
+    public UUID getId() {
+        return id;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public void setId(UUID idUsuario) {
+        this.id = idUsuario;
+    }
 
-  public void setUsername(@NotBlank @Length(max = 30) String username) {
-    this.username = username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public void setUsername(@NotBlank @Length(max = 30) String username) {
+        this.username = username;
+    }
 
-  public void setPassword(@NotBlank @Length(max = 30) String password) {
-    this.password = password;
-  }
+    public String getSenha() {
+        return senha;
+    }
 
-  public String getNomeCompleto() {
-    return nomeCompleto;
-  }
+    public void setSenha(@NotBlank @Length(max = 30) String senha) {
+        this.senha = senha;
+    }
 
-  public void setNomeCompleto(@NotBlank @Length(min = 3, max = 100) String nomeCompleto) {
-    this.nomeCompleto = nomeCompleto;
-  }
+    public String getNomeCompleto() {
+        return nomeCompleto;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setNomeCompleto(@NotBlank @Length(min = 3, max = 100) String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
+    }
 
-  public void setEmail(@NotBlank @Length(max = 100) @Email String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public String getTelefone() {
-    return telefone;
-  }
+    public void setEmail(@NotBlank @Length(max = 100) @Email String email) {
+        this.email = email;
+    }
 
-  public void setTelefone(@Length(max = 20) String telefone) {
-    this.telefone = telefone;
-  }
+    public String getTelefone() {
+        return telefone;
+    }
 
-  public String getChavePix() {
-    return chavePix;
-  }
+    public void setTelefone(@NotBlank @Length(max = 20) String telefone) {
+        this.telefone = telefone;
+    }
 
-  public void setChavePix(@Length(max = 255) String chavePix) {
-    this.chavePix = chavePix;
-  }
+    public String getChavePix() {
+        return chavePix;
+    }
 
-  public Usuario getAcessor() {
-    return this.acessor;
-  }
+    public void setChavePix(@NotBlank @Length(max = 255) String chavePix) {
+        this.chavePix = chavePix;
+    }
 
-  public void setAcessor(@Valid Usuario acessor) {
-    this.acessor = acessor;
-  }
+    public String getPapel() {
+        return papel;
+    }
 
-  public List<Usuario> getClientes() {
-    return new ArrayList<Usuario>(this.clientes);
-  }
+    public void setPapel(@NotBlank @Length(max = 255) String papel) {
+        this.papel = papel;
+    }
 
-  public void addCliente(@NotNull @Valid Usuario cliente) {
-    this.clientes.add(cliente);
-  }
+    public Usuario getAcessor() {
+        return this.acessor;
+    }
 
-  public void limparClientes() {
-    this.clientes.clear();
-  }
+    public void setAcessor(@Valid Usuario acessor) {
+        this.acessor = acessor;
+    }
 
-  public List<Transacao> getTransacoes() {
-    return new ArrayList<Transacao>(this.transacoes);
-  }
+    public List<Usuario> getClientes() {
+        return new ArrayList<>(this.clientes);
+    }
 
-  public void addTransacao(@NotNull @Valid Transacao transacao) {
-    this.transacoes.add(transacao);
-  }
+    public void addCliente(@NotNull @Valid Usuario cliente) {
+        this.clientes.add(cliente);
+    }
 
-  public void limparTransacoes() {
-    this.transacoes.clear();
-  }
+    public void limparClientes() {
+        this.clientes.clear();
+    }
 
-  public List<Instituicao> getCarteiras() {
-    return new ArrayList<Instituicao>(this.carteiras);
-  }
+    public List<Transacao> getTransacoes() {
+        return new ArrayList<Transacao>(this.transacoes);
+    }
 
-  public void addCarteira(@NotNull @Valid Instituicao carteira) {
-    this.carteiras.add(carteira);
-  }
+    public void addTransacao(@NotNull @Valid Transacao transacao) {
+        this.transacoes.add(transacao);
+    }
 
-  public void limparCarteiras() {
-    this.carteiras.clear();
-  }
+    public void limparTransacoes() {
+        this.transacoes.clear();
+    }
 
-  public List<Categoria> getCategorias() {
-    return new ArrayList<Categoria>(this.categorias);
-  }
+    public List<Carteira> getCarteiras() {
+        return new ArrayList<>(this.carteiras);
+    }
 
-  public void addCategoria(@NotNull @Valid Categoria categoria) {
-    this.categorias.add(categoria);
-  }
+    public void addCarteira(@NotNull @Valid Carteira carteira) {
+        this.carteiras.add(carteira);
+    }
 
-  public void limparCategorias() {
-    this.categorias.clear();
-  }
+    public void limparCarteiras() {
+        this.carteiras.clear();
+    }
+
+    public List<Categoria> getCategorias() {
+        return new ArrayList<>(this.categorias);
+    }
+
+    public void addCategoria(@NotNull @Valid Categoria categoria) {
+        this.categorias.add(categoria);
+    }
+
+    public void limparCategorias() {
+        this.categorias.clear();
+    }
 }

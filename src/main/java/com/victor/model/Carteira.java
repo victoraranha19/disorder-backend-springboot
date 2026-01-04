@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "categorias")
+@Table(name = "carteiras")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
-public class Categoria {
+public class Carteira {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,8 +29,23 @@ public class Categoria {
 
     @NotNull
     @PositiveOrZero
-    @Column(nullable = false)
-    private Double valorPlanejado;
+    @Column(precision = 2, nullable = false)
+    private Double contaCorrente;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(precision = 2, nullable = false)
+    private Double contaPoupanca;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(precision = 2, nullable = false)
+    private Double contaInvestimento;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(precision = 2, nullable = false)
+    private Double limiteCreditoTotal;
 
     @Valid
     @ManyToOne(optional = false)
@@ -40,31 +55,55 @@ public class Categoria {
 
     @NotNull
     @Valid
-    @OneToMany(mappedBy = "categoria")
+    @OneToMany(mappedBy = "carteira")
     private List<Transacao> transacoes = new ArrayList<>();
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer idCategoria) {
-        this.id = idCategoria;
+    public void setId(Integer idCarteira) {
+        this.id = idCarteira;
     }
 
     public String getTitulo() {
         return titulo;
     }
 
-    public void setTitulo(@NotBlank @Length(max = 50) String titulo) {
-        this.titulo = titulo;
+    public void setTitulo(@NotBlank @Length(max = 50) String nome) {
+        this.titulo = nome;
     }
 
-    public Double getValorPlanejado() {
-        return valorPlanejado;
+    public Double getContaCorrente() {
+        return contaCorrente;
     }
 
-    public void setValorPlanejado(@NotNull @PositiveOrZero Double valorPlanejado) {
-        this.valorPlanejado = valorPlanejado;
+    public void setContaCorrente(@NotNull @PositiveOrZero Double contaCorrente) {
+        this.contaCorrente = contaCorrente;
+    }
+
+    public Double getContaPoupanca() {
+        return contaPoupanca;
+    }
+
+    public void setContaPoupanca(@NotNull @PositiveOrZero Double contaPoupanca) {
+        this.contaPoupanca = contaPoupanca;
+    }
+
+    public Double getContaInvestimento() {
+        return contaInvestimento;
+    }
+
+    public void setContaInvestimento(@NotNull @PositiveOrZero Double contaInvestimento) {
+        this.contaInvestimento = contaInvestimento;
+    }
+
+    public Double getLimiteCreditoTotal() {
+        return limiteCreditoTotal;
+    }
+
+    public void setLimiteCreditoTotal(@NotNull @PositiveOrZero Double limiteCreditoTotal) {
+        this.limiteCreditoTotal = limiteCreditoTotal;
     }
 
     public Usuario getUsuario() {

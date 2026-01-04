@@ -1,65 +1,64 @@
 package com.victor.service;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import com.victor.dto.InstituicaoDTO;
-import com.victor.dto.mapper.InstituicaoMapper;
+import com.victor.dto.CarteiraDTO;
+import com.victor.dto.mapper.CarteiraMapper;
 import com.victor.exception.RecordNotFoundException;
-import com.victor.model.Instituicao;
-import com.victor.repository.InstituicaoRepository;
-
+import com.victor.model.Carteira;
+import com.victor.repository.CarteiraRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @Service
 public class CarteiraService {
 
-  private final InstituicaoRepository instituicaoRepository;
+    private final CarteiraRepository carteiraRepository;
 
-  public CarteiraService(InstituicaoRepository carteiraRepository) {
-    this.instituicaoRepository = carteiraRepository;
-  }
+    public CarteiraService(CarteiraRepository carteiraRepository) {
+        this.carteiraRepository = carteiraRepository;
+    }
 
-  public List<InstituicaoDTO> listarCarteiras() {
-    return instituicaoRepository.findAll()
-        .stream()
-        .map(InstituicaoMapper::toDTO)
-        .collect(Collectors.toList());
-  }
+    public List<CarteiraDTO> listarCarteiras() {
+        return carteiraRepository.findAll()
+                .stream()
+                .map(CarteiraMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
-  public InstituicaoDTO carteiraPorId(@NotNull @Positive UUID id) {
-    return instituicaoRepository.findById(id)
-        .map(InstituicaoMapper::toDTO)
-        .orElseThrow(() -> new RecordNotFoundException(id));
-  }
+    public CarteiraDTO carteiraPorId(@NotNull @Positive Integer id) {
+        return carteiraRepository.findById(id)
+                .map(CarteiraMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
+    }
 
-  public InstituicaoDTO criarCarteira(@Valid @NotNull InstituicaoDTO instituicaoDTO) {
-    return InstituicaoMapper.toDTO(instituicaoRepository.save(InstituicaoMapper.toEntity(instituicaoDTO)));
-  }
+    public CarteiraDTO criarCarteira(@Valid @NotNull CarteiraDTO carteiraDTO) {
+        return CarteiraMapper.toDTO(carteiraRepository.save(CarteiraMapper.toEntity(carteiraDTO)));
+    }
 
-  public InstituicaoDTO atualizarCarteira(@NotNull @Positive UUID id, @Valid @NotNull InstituicaoDTO instituicaoDTO) {
-    return instituicaoRepository.findById(id)
-        .map((recordFound) -> {
-          Instituicao carteira = InstituicaoMapper.toEntity(instituicaoDTO);
-          recordFound.setNome(instituicaoDTO.nome());
-          recordFound.getContas().forEach(carteira::addConta);
+    public CarteiraDTO atualizarCarteira(@NotNull @Positive Integer id, @Valid @NotNull CarteiraDTO carteiraDTO) {
+        return carteiraRepository.findById(id)
+                .map((recordFound) -> {
+                    Carteira carteira = CarteiraMapper.toEntity(carteiraDTO);
+                    recordFound.setTitulo(carteiraDTO.titulo());
+                    recordFound.setContaCorrente(carteiraDTO.contaCorrente());
+                    recordFound.setContaPoupanca(carteiraDTO.contaPoupanca());
+                    recordFound.setContaInvestimento(carteiraDTO.contaInvestimento());
+                    recordFound.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
+                    recordFound.limparTransacoes();
+                    carteira.getTransacoes().forEach(recordFound::addTransacao);
+                    return carteiraRepository.save(recordFound);
+                })
+                .map(CarteiraMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
+    }
 
-          recordFound.limparContas();
-          carteira.getContas().forEach(recordFound::addConta);
-          return instituicaoRepository.save(recordFound);
-        })
-        .map(InstituicaoMapper::toDTO)
-        .orElseThrow(() -> new RecordNotFoundException(id));
-  }
-
-  public void deletarCarteira(@NotNull @Positive UUID id) {
-    instituicaoRepository.delete(instituicaoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
-  }
+    public void deletarCarteira(@NotNull @Positive Integer id) {
+        carteiraRepository.delete(carteiraRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
+    }
 }

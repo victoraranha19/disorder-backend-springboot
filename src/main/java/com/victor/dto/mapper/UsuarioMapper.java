@@ -1,36 +1,36 @@
 package com.victor.dto.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.victor.dto.UsuarioDTO;
 import com.victor.model.Usuario;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UsuarioMapper {
-  public static UsuarioDTO toDTO(Usuario usuario) {
-    if (usuario == null) {
-      return null;
+    public static UsuarioDTO toDTO(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+
+        return new UsuarioDTO(usuario.getId(), usuario.getUsername(), usuario.getNomeCompleto(),
+                usuario.getEmail(), usuario.getTelefone(), usuario.getChavePix(), usuario.getPapel());
     }
 
-    return new UsuarioDTO(usuario.getId(), usuario.getUsername(), usuario.getNomeCompleto(),
-        usuario.getEmail(), usuario.getTelefone(), usuario.getChavePix());
-  }
+    public static Usuario toEntity(UsuarioDTO usuarioDTO) {
+        if (usuarioDTO == null) {
+            return null;
+        }
 
-  public static Usuario toEntity(UsuarioDTO usuarioDTO) {
-    if (usuarioDTO == null) {
-      return null;
+        Usuario usuario = new Usuario();
+        if (usuarioDTO.id() != null) {
+            usuario.setId(usuarioDTO.id());
+        }
+        usuario.setUsername(usuarioDTO.username());
+        usuario.setSenha("pass");
+        usuario.setNomeCompleto(usuarioDTO.nomeCompleto());
+        usuario.setEmail(usuarioDTO.email());
+        usuario.setTelefone(usuarioDTO.telefone());
+        usuario.setChavePix(usuarioDTO.chavePix());
+        usuario.setPapel(usuarioDTO.papel());
+        return usuario;
     }
-
-    Usuario usuario = new Usuario();
-    if (usuarioDTO.id() != null) {
-      usuario.setId(usuarioDTO.id());
-    }
-    usuario.setUsername(usuarioDTO.username());
-    usuario.setPassword("pass");
-    usuario.setNomeCompleto(usuarioDTO.nomeCompleto());
-    usuario.setEmail(usuarioDTO.email());
-    usuario.setTelefone(usuarioDTO.telefone());
-    usuario.setChavePix(usuarioDTO.chavePix());
-    return usuario;
-  }
 }

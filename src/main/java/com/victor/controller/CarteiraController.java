@@ -1,57 +1,46 @@
 package com.victor.controller;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.victor.dto.InstituicaoDTO;
+import com.victor.dto.CarteiraDTO;
 import com.victor.service.CarteiraService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/carteiras")
 public class CarteiraController {
 
-  private final CarteiraService carteiraService;
+    private final CarteiraService carteiraService;
 
-  public CarteiraController(CarteiraService carteiraService) {
-    this.carteiraService = carteiraService;
-  }
+    public CarteiraController(CarteiraService carteiraService) {
+        this.carteiraService = carteiraService;
+    }
 
-  @GetMapping
-  public @ResponseBody List<InstituicaoDTO> listarCarteiras() {
-    return carteiraService.listarCarteiras();
-  }
+    @GetMapping
+    public @ResponseBody List<CarteiraDTO> listarCarteiras() {
+        return carteiraService.listarCarteiras();
+    }
 
-  @GetMapping("/{id}")
-  public InstituicaoDTO carteiraPorId(@PathVariable UUID id) {
-    return carteiraService.carteiraPorId(id);
-  }
+    @GetMapping("/{id}")
+    public CarteiraDTO carteiraPorId(@PathVariable Integer id) {
+        return carteiraService.carteiraPorId(id);
+    }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public InstituicaoDTO criarCarteira(@RequestBody InstituicaoDTO instituicaoDTO) {
-    return carteiraService.criarCarteira(instituicaoDTO);
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CarteiraDTO criarCarteira(@RequestBody CarteiraDTO carteiraDTO) {
+        return carteiraService.criarCarteira(carteiraDTO);
+    }
 
-  @PutMapping("/{id}")
-  public InstituicaoDTO atualizarCarteira(@PathVariable UUID id, @RequestBody InstituicaoDTO instituicaoDTO) {
-    return carteiraService.atualizarCarteira(id, instituicaoDTO);
-  }
+    @PutMapping("/{id}")
+    public CarteiraDTO atualizarCarteira(@PathVariable Integer id, @RequestBody CarteiraDTO carteiraDTO) {
+        return carteiraService.atualizarCarteira(id, carteiraDTO);
+    }
 
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deletarCarteira(@PathVariable UUID id) {
-    carteiraService.deletarCarteira(id);
-  }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarCarteira(@PathVariable Integer id) {
+        carteiraService.deletarCarteira(id);
+    }
 }
