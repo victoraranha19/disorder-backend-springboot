@@ -1,9 +1,9 @@
 CREATE TABLE categorias (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    valorPlanejado DECIMAL(10, 2) NOT NULL CHECK (valorPlanejado >= 0),
-    idUsuario UUID NOT NULL,
+    titulo VARCHAR(50) NOT NULL,
+    valor_planejado DECIMAL(10, 2) NOT NULL CHECK (valor_planejado >= 0),
+    id_usuario UUID,
     ativo BOOLEAN DEFAULT TRUE,
 
-    FOREIGN KEY (idUsuario) REFERENCES usuarios(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );

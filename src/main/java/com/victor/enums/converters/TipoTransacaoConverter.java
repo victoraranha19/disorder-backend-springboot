@@ -27,5 +27,4 @@ public class TipoTransacaoConverter implements AttributeConverter<TipoTransacao,
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
-
 }

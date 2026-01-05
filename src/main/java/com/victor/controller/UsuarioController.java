@@ -23,17 +23,6 @@ public class UsuarioController {
         return usuarioService.listarUsuarios();
     }
 
-    @GetMapping("/{id}")
-    public UsuarioDTO usuarioPorId(@PathVariable UUID id) {
-        return usuarioService.usuarioPorId(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDTO criarUsuario(@RequestBody UsuarioDTO usuario) {
-        return usuarioService.criarUsuario(usuario);
-    }
-
     @PutMapping("/{id}")
     public UsuarioDTO atualizarUsuario(@PathVariable UUID id, @RequestBody UsuarioDTO usuario) {
         return usuarioService.atualizarUsuario(id, usuario);

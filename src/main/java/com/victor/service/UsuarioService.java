@@ -1,15 +1,22 @@
 package com.victor.service;
 
 import com.victor.dto.UsuarioDTO;
-import com.victor.dto.mapper.CategoriaMapper;
+import com.victor.dto.UsuarioRegistroDTO;
 import com.victor.dto.mapper.UsuarioMapper;
+import com.victor.enums.PapelAcesso;
 import com.victor.exception.RecordNotFoundException;
-import com.victor.model.Categoria;
 import com.victor.model.Usuario;
 import com.victor.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.jspecify.annotations.NullMarked;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,12 +26,15 @@ import java.util.stream.Collectors;
 
 @Validated
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    @Override
+    @NullMarked
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByLogin(username);
     }
 
     public List<UsuarioDTO> listarUsuarios() {
@@ -33,26 +43,28 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public UsuarioDTO usuarioPorId(@NotNull @Positive UUID id) {
-        return usuarioRepository.findById(id)
-                .map(UsuarioMapper::toDTO)
-                .orElseThrow(() -> new RecordNotFoundException(id));
+    public ResponseEntity criarUsuario(@Valid @NotNull UsuarioRegistroDTO usuarioRegistroDTO) {
+        if (usuarioRepository.findByLogin(usuarioRegistroDTO.login()) != null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Usuario novoUsuario = UsuarioMapper.novoUsuario(usuarioRegistroDTO);
+        novoUsuario.setPapel(PapelAcesso.USER);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioRegistroDTO.senha());
+        novoUsuario.setSenha(encryptedPassword);
+        usuarioRepository.save(novoUsuario);
+        return ResponseEntity.ok().build();
     }
 
-    public UsuarioDTO criarUsuario(@Valid @NotNull UsuarioDTO usuarioDTO) {
-        return UsuarioMapper.toDTO(usuarioRepository.save(UsuarioMapper.toEntity(usuarioDTO)));
-    }
-
-    public UsuarioDTO atualizarUsuario(@NotNull @Positive UUID id, @Valid @NotNull UsuarioDTO usuarioDTO) {
+    public UsuarioDTO atualizarUsuario(@NotNull UUID id, @Valid @NotNull UsuarioDTO usuarioDTO) {
         return usuarioRepository.findById(id)
                 .map((recordFound) -> {
                     Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
-                    recordFound.setUsername(usuarioDTO.username());
+                    recordFound.setLogin(usuarioDTO.login());
                     recordFound.setNomeCompleto(usuarioDTO.nomeCompleto());
                     recordFound.setEmail(usuarioDTO.email());
                     recordFound.setTelefone(usuarioDTO.telefone());
                     recordFound.setChavePix(usuarioDTO.chavePix());
-                    recordFound.setPapel(usuarioDTO.papel());
+                    recordFound.setPapel(usuario.getPapel());
                     recordFound.limparClientes();
                     usuario.getClientes().forEach(recordFound::addCliente);
                     recordFound.limparTransacoes();

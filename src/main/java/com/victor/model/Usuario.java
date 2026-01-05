@@ -1,6 +1,8 @@
 package com.victor.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.victor.enums.PapelAcesso;
+import com.victor.enums.converters.PapelAcessoConverter;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -9,15 +11,21 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 import org.hibernate.validator.constraints.Length;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,38 +34,37 @@ public class Usuario {
     @NotBlank
     @Length(max = 30)
     @Column(length = 30, unique = true, nullable = false)
-    private String username;
+    private String login = "";
 
     @NotBlank
-    @Length(max = 30)
-    @Column(length = 30, nullable = false)
-    private String senha;
+    @Column(nullable = false)
+    private String senha = "";
 
     @NotBlank
     @Length(min = 3, max = 100)
     @Column(length = 100, nullable = false)
-    private String nomeCompleto;
+    private String nomeCompleto = "";
 
     @NotBlank
     @Length(max = 100)
     @Email
     @Column(length = 100, unique = true, nullable = false)
-    private String email;
+    private String email = "";
 
     @NotNull
     @Length(max = 20)
     @Column(length = 20)
-    private String telefone;
+    private String telefone = "";
 
     @NotNull
     @Length(max = 255)
     @Column(length = 255)
-    private String chavePix;
+    private String chavePix = "";
 
     @NotNull
-    @Length(max = 255)
-    @Column(length = 255)
-    private String papel;
+    @Column(nullable = false)
+    @Convert(converter = PapelAcessoConverter.class)
+    private PapelAcesso papel = PapelAcesso.USER;
 
     @Valid
     @ManyToOne(optional = true)
@@ -93,19 +100,19 @@ public class Usuario {
         this.id = idUsuario;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(@NotBlank @Length(max = 30) String username) {
-        this.username = username;
+    public void setLogin(@NotBlank @Length(max = 30) String username) {
+        this.login = username;
     }
 
     public String getSenha() {
         return senha;
     }
 
-    public void setSenha(@NotBlank @Length(max = 30) String senha) {
+    public void setSenha(@NotBlank String senha) {
         this.senha = senha;
     }
 
@@ -129,7 +136,7 @@ public class Usuario {
         return telefone;
     }
 
-    public void setTelefone(@NotBlank @Length(max = 20) String telefone) {
+    public void setTelefone(@NotNull @Length(max = 20) String telefone) {
         this.telefone = telefone;
     }
 
@@ -137,15 +144,15 @@ public class Usuario {
         return chavePix;
     }
 
-    public void setChavePix(@NotBlank @Length(max = 255) String chavePix) {
+    public void setChavePix(@NotNull @Length(max = 255) String chavePix) {
         this.chavePix = chavePix;
     }
 
-    public String getPapel() {
+    public PapelAcesso getPapel() {
         return papel;
     }
 
-    public void setPapel(@NotBlank @Length(max = 255) String papel) {
+    public void setPapel(@NotNull PapelAcesso papel) {
         this.papel = papel;
     }
 
@@ -170,7 +177,7 @@ public class Usuario {
     }
 
     public List<Transacao> getTransacoes() {
-        return new ArrayList<Transacao>(this.transacoes);
+        return new ArrayList<>(this.transacoes);
     }
 
     public void addTransacao(@NotNull @Valid Transacao transacao) {
@@ -203,5 +210,44 @@ public class Usuario {
 
     public void limparCategorias() {
         this.categorias.clear();
+    }
+
+    @Override
+    @NullMarked
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.papel.toString().equals(PapelAcesso.ADMIN.toString()))
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return getSenha();
+    }
+
+    @Override
+    @NullMarked
+    public String getUsername() {
+        return this.getLogin();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }
