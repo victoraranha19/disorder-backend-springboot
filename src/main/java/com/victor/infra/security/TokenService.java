@@ -37,13 +37,13 @@ public class TokenService {
                     .withIssuer("auth-api")
                     .build()
                     .verify(token)
-                    .getToken();
+                    .getSubject();
         } catch (JWTVerificationException e) {
             return "";
         }
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.of("-03:00"));
     }
 }

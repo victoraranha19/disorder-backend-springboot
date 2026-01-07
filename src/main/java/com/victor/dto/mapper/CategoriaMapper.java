@@ -15,11 +15,9 @@ public class CategoriaMapper {
     }
 
     public static Categoria toEntity(CategoriaDTO categoriaDTO) {
-        if (categoriaDTO == null) {
-            return null;
-        }
-
         Categoria categoria = new Categoria();
+        if (categoriaDTO == null) return categoria;
+
         if (categoriaDTO.id() != null) {
             categoria.setId(categoriaDTO.id());
         }

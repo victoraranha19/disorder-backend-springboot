@@ -6,18 +6,15 @@ import com.victor.service.TransacaoService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/transacoes")
 public class TransacaoController {
-
-    private final TransacaoService transacaoService;
-
-    public TransacaoController(TransacaoService transacaoService) {
-        this.transacaoService = transacaoService;
-    }
+    @Autowired
+    TransacaoService transacaoService;
 
     @GetMapping
     public TransacaoPageDTO listarTransacoes(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,

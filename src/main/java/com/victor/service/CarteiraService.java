@@ -8,6 +8,7 @@ import com.victor.repository.CarteiraRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,15 +18,13 @@ import java.util.stream.Collectors;
 @Validated
 @Service
 public class CarteiraService {
+    @Autowired
+    CarteiraRepository carteiraRepository;
+    @Autowired
+    UsuarioService usuarioService;
 
-    private final CarteiraRepository carteiraRepository;
-
-    public CarteiraService(CarteiraRepository carteiraRepository) {
-        this.carteiraRepository = carteiraRepository;
-    }
-
-    public List<CarteiraDTO> listarCarteiras() {
-        return carteiraRepository.findAll()
+    public List<CarteiraDTO> listarCarteirasUsuario() {
+        return carteiraRepository.findByUsuarioId(usuarioService.getUsuarioLogado().getId())
                 .stream()
                 .map(CarteiraMapper::toDTO)
                 .collect(Collectors.toList());
@@ -38,20 +37,20 @@ public class CarteiraService {
     }
 
     public CarteiraDTO criarCarteira(@Valid @NotNull CarteiraDTO carteiraDTO) {
-        return CarteiraMapper.toDTO(carteiraRepository.save(CarteiraMapper.toEntity(carteiraDTO)));
+        Carteira novaCarteira = CarteiraMapper.toEntity(carteiraDTO);
+        novaCarteira.setUsuario(usuarioService.getUsuarioLogado());
+        return CarteiraMapper.toDTO(carteiraRepository.save(novaCarteira));
     }
 
     public CarteiraDTO atualizarCarteira(@NotNull @Positive Integer id, @Valid @NotNull CarteiraDTO carteiraDTO) {
         return carteiraRepository.findById(id)
                 .map((recordFound) -> {
-                    Carteira carteira = CarteiraMapper.toEntity(carteiraDTO);
+                    recordFound.setId(id);
                     recordFound.setTitulo(carteiraDTO.titulo());
                     recordFound.setContaCorrente(carteiraDTO.contaCorrente());
                     recordFound.setContaPoupanca(carteiraDTO.contaPoupanca());
                     recordFound.setContaInvestimento(carteiraDTO.contaInvestimento());
                     recordFound.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
-                    recordFound.limparTransacoes();
-                    carteira.getTransacoes().forEach(recordFound::addTransacao);
                     return carteiraRepository.save(recordFound);
                 })
                 .map(CarteiraMapper::toDTO)

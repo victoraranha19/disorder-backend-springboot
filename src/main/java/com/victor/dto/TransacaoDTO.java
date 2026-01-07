@@ -14,5 +14,7 @@ public record TransacaoDTO(
         @NotNull @Positive Double valor,
         @NotNull Date dataTransacao,
         @NotNull @ValueOfEnum(enumClass = TipoTransacao.class) String tipo,
-        @NotNull @Positive Integer parcelas) {
+        @NotNull @Positive Integer parcelas,
+        Integer idCarteira,
+        Integer idCategoria) {
 }

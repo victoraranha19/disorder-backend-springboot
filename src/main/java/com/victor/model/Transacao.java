@@ -129,7 +129,7 @@ public class Transacao {
     }
 
     public Categoria getCategoria() {
-        return categoria;
+        return this.categoria;
     }
 
     public void setCategoria(@Valid Categoria categoria) {

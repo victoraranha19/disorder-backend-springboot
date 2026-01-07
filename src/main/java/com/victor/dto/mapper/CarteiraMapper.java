@@ -18,18 +18,15 @@ public class CarteiraMapper {
         if (carteiraDTO == null) {
             return null;
         }
-
         Carteira carteira = new Carteira();
         if (carteiraDTO.id() != null) {
             carteira.setId(carteiraDTO.id());
         }
-
         carteira.setTitulo(carteiraDTO.titulo());
         carteira.setContaCorrente(carteiraDTO.contaCorrente());
         carteira.setContaPoupanca(carteiraDTO.contaPoupanca());
         carteira.setContaInvestimento(carteiraDTO.contaInvestimento());
         carteira.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
-
         return carteira;
     }
 }

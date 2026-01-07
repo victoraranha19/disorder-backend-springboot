@@ -78,12 +78,4 @@ public class Categoria {
     public List<Transacao> getTransacoes() {
         return new ArrayList<>(this.transacoes);
     }
-
-    public void addTransacao(@NotNull @Valid Transacao transacao) {
-        this.transacoes.add(transacao);
-    }
-
-    public void limparTransacoes() {
-        this.transacoes.clear();
-    }
 }
