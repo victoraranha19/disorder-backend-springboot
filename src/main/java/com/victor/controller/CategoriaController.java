@@ -2,7 +2,6 @@ package com.victor.controller;
 
 import com.victor.dto.CategoriaDTO;
 import com.victor.service.CategoriaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,17 +10,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categorias")
 public class CategoriaController {
-    @Autowired
-    CategoriaService categoriaService;
+    private final CategoriaService categoriaService;
+
+    CategoriaController(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
+    }
 
     @GetMapping
     public List<CategoriaDTO> listarCategorias() {
         return categoriaService.listarCategoriasUsuario();
-    }
-
-    @GetMapping("/{id}")
-    public CategoriaDTO categoriaPorId(@PathVariable Integer id) {
-        return categoriaService.categoriaPorId(id);
     }
 
     @PostMapping

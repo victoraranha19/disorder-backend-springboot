@@ -1,8 +1,8 @@
 package com.victor.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.victor.enums.TipoTransacao;
-import com.victor.enums.converters.TipoTransacaoConverter;
+import com.victor.enums.TipoCarteira;
+import com.victor.enums.converters.TipoCarteiraConverter;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +28,6 @@ public class Transacao {
     private String descricao;
 
     @NotNull
-    @Positive
     @Column(nullable = false)
     private Double valor;
 
@@ -38,8 +37,8 @@ public class Transacao {
 
     @NotNull
     @Column(nullable = false)
-    @Convert(converter = TipoTransacaoConverter.class)
-    private TipoTransacao tipo; // 'C' para crédito, 'D' para débito
+    @Convert(converter = TipoCarteiraConverter.class)
+    private TipoCarteira tipo; // 'C' para crédito, 'D' para débito
 
     @NotNull
     @Positive
@@ -96,11 +95,11 @@ public class Transacao {
         this.dataTransacao = dataTransacao;
     }
 
-    public TipoTransacao getTipo() {
+    public TipoCarteira getTipo() {
         return tipo;
     }
 
-    public void setTipo(@NotNull TipoTransacao tipo) {
+    public void setTipo(@NotNull TipoCarteira tipo) {
         this.tipo = tipo;
     }
 

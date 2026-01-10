@@ -8,7 +8,7 @@ import com.victor.repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,34 +18,37 @@ import java.util.stream.Collectors;
 @Validated
 @Service
 public class CategoriaService {
-    @Autowired
-    CategoriaRepository categoriaRepository;
-    @Autowired
-    UsuarioService usuarioService;
+    private final CategoriaRepository categoriaRepository;
+    private final UsuarioService usuarioService;
 
-    public List<CategoriaDTO> listarCategoriasUsuario() {
-        return categoriaRepository.findByUsuarioId(usuarioService.getUsuarioLogado().getId())
-                .stream()
-                .map(CategoriaMapper::toDTO)
-                .collect(Collectors.toList());
+    CategoriaService(CategoriaRepository categoriaRepository, UsuarioService usuarioService) {
+        this.categoriaRepository = categoriaRepository;
+        this.usuarioService = usuarioService;
     }
 
-    public CategoriaDTO categoriaPorId(@NotNull @Positive Integer id) {
-        return categoriaRepository.findById(id)
-                .map(CategoriaMapper::toDTO)
-                .orElseThrow(() -> new RecordNotFoundException(id));
-    }
-
+    // Create
     public CategoriaDTO criarCategoria(@Valid @NotNull CategoriaDTO categoriaDTO) {
         Categoria novaCategoria = CategoriaMapper.toEntity(categoriaDTO);
         novaCategoria.setUsuario(usuarioService.getUsuarioLogado());
         return CategoriaMapper.toDTO(categoriaRepository.save(novaCategoria));
     }
 
+    // Read
+    public List<CategoriaDTO> listarCategoriasUsuario() {
+        return categoriaRepository.findByUsuarioId(usuarioService.getUsuarioLogado().getId())
+                .stream()
+                .map(CategoriaMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    public @Nullable Categoria categoriaTransacaoPorId(Integer idCategoria) {
+        if (idCategoria == null) return null;
+        return categoriaRepository.findById(idCategoria).orElseThrow(() -> new RecordNotFoundException(idCategoria));
+    }
+
+    // Update
     public CategoriaDTO atualizarCategoria(@NotNull @Positive Integer id, @Valid @NotNull CategoriaDTO categoriaDTO) {
         return categoriaRepository.findById(id)
                 .map((recordFound) -> {
-                    recordFound.setId(id);
                     recordFound.setTitulo(categoriaDTO.titulo());
                     recordFound.setValorPlanejado(categoriaDTO.valorPlanejado());
                     return categoriaRepository.save(recordFound);
@@ -54,6 +57,7 @@ public class CategoriaService {
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
+    // Delete
     public void deletarCategoria(@NotNull @Positive Integer id) {
         categoriaRepository.delete(categoriaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }

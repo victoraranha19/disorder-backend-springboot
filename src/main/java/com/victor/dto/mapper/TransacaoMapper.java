@@ -1,7 +1,7 @@
 package com.victor.dto.mapper;
 
 import com.victor.dto.TransacaoDTO;
-import com.victor.enums.TipoTransacao;
+import com.victor.enums.TipoCarteira;
 import com.victor.model.Transacao;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class TransacaoMapper {
         transacao.setDescricao(transacaoDTO.descricao());
         transacao.setValor(transacaoDTO.valor());
         transacao.setDataTransacao(transacaoDTO.dataTransacao());
-        transacao.setTipo(TipoTransacao.convertTipoTransacaoValue(transacaoDTO.tipo()));
+        transacao.setTipo(TipoCarteira.convertTipoTransacaoValue(transacaoDTO.tipo()));
         transacao.setParcelas(transacaoDTO.parcelas());
         return transacao;
     }

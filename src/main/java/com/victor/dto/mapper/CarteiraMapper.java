@@ -11,7 +11,7 @@ public class CarteiraMapper {
             return null;
         }
 
-        return new CarteiraDTO(carteira.getId(), carteira.getTitulo(), carteira.getContaCorrente(), carteira.getContaPoupanca(), carteira.getContaInvestimento(), carteira.getLimiteCreditoTotal());
+        return new CarteiraDTO(carteira.getId(), carteira.getTitulo(), carteira.getLimiteCreditoTotal());
     }
 
     public static Carteira toEntity(CarteiraDTO carteiraDTO) {
@@ -23,9 +23,6 @@ public class CarteiraMapper {
             carteira.setId(carteiraDTO.id());
         }
         carteira.setTitulo(carteiraDTO.titulo());
-        carteira.setContaCorrente(carteiraDTO.contaCorrente());
-        carteira.setContaPoupanca(carteiraDTO.contaPoupanca());
-        carteira.setContaInvestimento(carteiraDTO.contaInvestimento());
         carteira.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
         return carteira;
     }

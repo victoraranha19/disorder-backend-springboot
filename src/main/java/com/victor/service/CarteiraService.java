@@ -8,7 +8,7 @@ import com.victor.repository.CarteiraRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,38 +18,38 @@ import java.util.stream.Collectors;
 @Validated
 @Service
 public class CarteiraService {
-    @Autowired
-    CarteiraRepository carteiraRepository;
-    @Autowired
-    UsuarioService usuarioService;
+    private final CarteiraRepository carteiraRepository;
+    private final UsuarioService usuarioService;
 
-    public List<CarteiraDTO> listarCarteirasUsuario() {
-        return carteiraRepository.findByUsuarioId(usuarioService.getUsuarioLogado().getId())
-                .stream()
-                .map(CarteiraMapper::toDTO)
-                .collect(Collectors.toList());
+    CarteiraService(CarteiraRepository carteiraRepository, UsuarioService usuarioService) {
+        this.carteiraRepository = carteiraRepository;
+        this.usuarioService = usuarioService;
     }
 
-    public CarteiraDTO carteiraPorId(@NotNull @Positive Integer id) {
-        return carteiraRepository.findById(id)
-                .map(CarteiraMapper::toDTO)
-                .orElseThrow(() -> new RecordNotFoundException(id));
-    }
-
+    // Create
     public CarteiraDTO criarCarteira(@Valid @NotNull CarteiraDTO carteiraDTO) {
         Carteira novaCarteira = CarteiraMapper.toEntity(carteiraDTO);
         novaCarteira.setUsuario(usuarioService.getUsuarioLogado());
         return CarteiraMapper.toDTO(carteiraRepository.save(novaCarteira));
     }
 
+    // Read
+    public List<CarteiraDTO> listarCarteirasUsuario() {
+        return carteiraRepository.findByUsuarioId(usuarioService.getUsuarioLogado().getId())
+                .stream()
+                .map(CarteiraMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    public @Nullable Carteira carteiraTransacaoPorId(Integer idCarteira) {
+        if (idCarteira == null) return null;
+        return carteiraRepository.findById(idCarteira).orElseThrow(() -> new RecordNotFoundException(idCarteira));
+    }
+
+    // Update
     public CarteiraDTO atualizarCarteira(@NotNull @Positive Integer id, @Valid @NotNull CarteiraDTO carteiraDTO) {
         return carteiraRepository.findById(id)
                 .map((recordFound) -> {
-                    recordFound.setId(id);
                     recordFound.setTitulo(carteiraDTO.titulo());
-                    recordFound.setContaCorrente(carteiraDTO.contaCorrente());
-                    recordFound.setContaPoupanca(carteiraDTO.contaPoupanca());
-                    recordFound.setContaInvestimento(carteiraDTO.contaInvestimento());
                     recordFound.setLimiteCreditoTotal(carteiraDTO.limiteCreditoTotal());
                     return carteiraRepository.save(recordFound);
                 })
@@ -57,6 +57,7 @@ public class CarteiraService {
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
+    // Delete
     public void deletarCarteira(@NotNull @Positive Integer id) {
         carteiraRepository.delete(carteiraRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }

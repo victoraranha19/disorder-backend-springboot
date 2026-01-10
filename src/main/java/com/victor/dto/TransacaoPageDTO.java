@@ -6,5 +6,4 @@ public record TransacaoPageDTO(
         List<TransacaoDTO> transacoes,
         long totalTransacoes,
         int totalPaginas) {
-
 }

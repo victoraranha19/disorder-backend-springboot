@@ -9,5 +9,4 @@ public record CategoriaDTO(
         Integer id,
         @NotBlank @Length(max = 50) String titulo,
         @NotNull @PositiveOrZero Double valorPlanejado) {
-
 }

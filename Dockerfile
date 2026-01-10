@@ -8,3 +8,6 @@ FROM eclipse-temurin:25-jdk
 WORKDIR /app
 COPY --from=java /app/target/disorder-backend-springboot.jar /app/disorder-backend-springboot.jar
 ENTRYPOINT ["java","-jar","/app/disorder-backend-springboot.jar"]
+
+# To build the Docker image, use:
+# docker build -t disorder-backend-springboot:latest .

@@ -2,29 +2,43 @@ package com.victor.controller;
 
 import com.victor.dto.TransacaoDTO;
 import com.victor.dto.TransacaoPageDTO;
+import com.victor.enums.TipoTransacao;
 import com.victor.service.TransacaoService;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.validator.constraints.Length;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/api/transacoes")
 public class TransacaoController {
-    @Autowired
-    TransacaoService transacaoService;
+    private final TransacaoService transacaoService;
 
-    @GetMapping
-    public TransacaoPageDTO listarTransacoes(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
-                                             @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina) {
-        return transacaoService.listarTransacoes(pagina, itensPorPagina);
+    TransacaoController(TransacaoService transacaoService) {
+        this.transacaoService = transacaoService;
     }
 
-    @GetMapping("/{id}")
-    public TransacaoDTO transacaoPorId(@PathVariable Integer id) {
-        return transacaoService.transacaoPorId(id);
+    @GetMapping("/entradas")
+    public TransacaoPageDTO listarEntradas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
+                                             @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
+                                             @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
+                                             @RequestParam() @Nullable Integer carteiraId,
+                                             @RequestParam() @Nullable Integer categoriaId) throws ParseException {
+        return transacaoService.listarTransacoes(TipoTransacao.ENTRADA, pagina, itensPorPagina, mesAno, carteiraId, categoriaId);
+    }
+    @GetMapping("/saidas")
+    public TransacaoPageDTO listarSaidas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
+                                             @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
+                                             @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
+                                             @RequestParam() @Nullable Integer carteiraId,
+                                             @RequestParam() @Nullable Integer categoriaId) throws ParseException {
+        return transacaoService.listarTransacoes(TipoTransacao.SAIDA, pagina, itensPorPagina, mesAno, carteiraId, categoriaId);
     }
 
     @PostMapping

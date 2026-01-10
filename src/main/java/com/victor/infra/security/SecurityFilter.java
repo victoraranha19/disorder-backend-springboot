@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jspecify.annotations.NullMarked;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,10 +16,13 @@ import java.io.IOException;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
-    TokenService tokenService;
-    @Autowired
-    UsuarioService usuarioService;
+    private final TokenService tokenService;
+    private final UsuarioService usuarioService;
+
+    SecurityFilter(TokenService tokenService, UsuarioService usuarioService) {
+        this.tokenService = tokenService;
+        this.usuarioService = usuarioService;
+    }
 
     @Override
     @NullMarked

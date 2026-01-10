@@ -30,21 +30,6 @@ public class Carteira {
     @NotNull
     @PositiveOrZero
     @Column(precision = 2, nullable = false)
-    private Double contaCorrente;
-
-    @NotNull
-    @PositiveOrZero
-    @Column(precision = 2, nullable = false)
-    private Double contaPoupanca;
-
-    @NotNull
-    @PositiveOrZero
-    @Column(precision = 2, nullable = false)
-    private Double contaInvestimento;
-
-    @NotNull
-    @PositiveOrZero
-    @Column(precision = 2, nullable = false)
     private Double limiteCreditoTotal;
 
     @Valid
@@ -72,30 +57,6 @@ public class Carteira {
 
     public void setTitulo(@NotBlank @Length(max = 50) String nome) {
         this.titulo = nome;
-    }
-
-    public Double getContaCorrente() {
-        return contaCorrente;
-    }
-
-    public void setContaCorrente(@NotNull @PositiveOrZero Double contaCorrente) {
-        this.contaCorrente = contaCorrente;
-    }
-
-    public Double getContaPoupanca() {
-        return contaPoupanca;
-    }
-
-    public void setContaPoupanca(@NotNull @PositiveOrZero Double contaPoupanca) {
-        this.contaPoupanca = contaPoupanca;
-    }
-
-    public Double getContaInvestimento() {
-        return contaInvestimento;
-    }
-
-    public void setContaInvestimento(@NotNull @PositiveOrZero Double contaInvestimento) {
-        this.contaInvestimento = contaInvestimento;
     }
 
     public Double getLimiteCreditoTotal() {

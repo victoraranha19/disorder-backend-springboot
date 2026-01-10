@@ -10,8 +10,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.jspecify.annotations.NullMarked;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,27 +23,35 @@ import java.util.UUID;
 public class UsuarioService implements UserDetailsService {
     private Usuario usuarioLogado = null;
 
-    @Autowired
-    UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
+    UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    // Create
+    public void criarUsuario(@Valid @NotNull UsuarioRegistroDTO usuarioRegistroDTO) {
+        // Valida se o login já existe
+        if (usuarioRepository.findByLogin(usuarioRegistroDTO.login()) != null) {
+            throw new RuntimeException("Login já existe");
+        }
+        // Cria o novo usuário com acesso padrão USER
+        Usuario novoUsuario = UsuarioMapper.novoUsuario(usuarioRegistroDTO);
+        novoUsuario.setPapel(PapelAcesso.USER);
+        // Criptografa a senha antes de salvar
+        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioRegistroDTO.senha());
+        novoUsuario.setSenha(encryptedPassword);
+        usuarioRepository.save(novoUsuario);
+    }
+
+    // Read
     @Override
     @NullMarked
     public Usuario loadUserByUsername(String username) throws UsernameNotFoundException {
         return usuarioRepository.findByLogin(username);
     }
 
-    public ResponseEntity criarUsuario(@Valid @NotNull UsuarioRegistroDTO usuarioRegistroDTO) {
-        if (usuarioRepository.findByLogin(usuarioRegistroDTO.login()) != null) {
-            return ResponseEntity.badRequest().build();
-        }
-        Usuario novoUsuario = UsuarioMapper.novoUsuario(usuarioRegistroDTO);
-        novoUsuario.setPapel(PapelAcesso.USER);
-        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioRegistroDTO.senha());
-        novoUsuario.setSenha(encryptedPassword);
-        usuarioRepository.save(novoUsuario);
-        return ResponseEntity.ok().build();
-    }
-
+    // Delete
     public void deletarUsuario(@NotNull @Positive UUID id) {
         usuarioRepository.delete(usuarioRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
@@ -53,6 +59,7 @@ public class UsuarioService implements UserDetailsService {
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
     }
+
     public Usuario getUsuarioLogado() {
         return this.usuarioLogado;
     }

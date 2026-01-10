@@ -2,7 +2,6 @@ package com.victor.controller;
 
 import com.victor.dto.CarteiraDTO;
 import com.victor.service.CarteiraService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,17 +10,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/carteiras")
 public class CarteiraController {
-    @Autowired
-    CarteiraService carteiraService;
+    private final CarteiraService carteiraService;
+
+    CarteiraController(CarteiraService carteiraService) {
+        this.carteiraService = carteiraService;
+    }
 
     @GetMapping
     public @ResponseBody List<CarteiraDTO> listarCarteiras() {
         return carteiraService.listarCarteirasUsuario();
-    }
-
-    @GetMapping("/{id}")
-    public CarteiraDTO carteiraPorId(@PathVariable Integer id) {
-        return carteiraService.carteiraPorId(id);
     }
 
     @PostMapping
