@@ -5,6 +5,7 @@ import com.victor.enums.validation.ValueOfEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Date;
 
@@ -15,6 +16,8 @@ public record TransacaoDTO(
         @NotNull Date dataTransacao,
         @NotNull @ValueOfEnum(enumClass = TipoCarteira.class) String tipo,
         @NotNull @Positive Integer parcelas,
-        Integer idCarteira,
-        Integer idCategoria) {
+        @Nullable Integer idCarteira,
+        @NotNull String tituloCarteira,
+        @Nullable Integer idCategoria,
+        @NotNull String tituloCategoria){
 }

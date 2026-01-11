@@ -11,3 +11,4 @@ ENTRYPOINT ["java","-jar","/app/disorder-backend-springboot.jar"]
 
 # To build the Docker image, use:
 # docker build -t victoraranha19/disorder-backend-springboot:latest .
+# docker push victoraranha19/disorder-backend-springboot:latest

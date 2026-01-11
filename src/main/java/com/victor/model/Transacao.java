@@ -119,16 +119,28 @@ public class Transacao {
         this.usuario = usuario;
     }
 
-    public Carteira getCarteira() {
-        return carteira;
+    public Integer getCarteiraId() {
+        if (carteira != null) return carteira.getId();
+        return null;
+    }
+
+    public String getCarteiraTitulo() {
+        if (carteira != null) return carteira.getTitulo();
+        return null;
     }
 
     public void setCarteira(@Valid Carteira carteira) {
         this.carteira = carteira;
     }
 
-    public Categoria getCategoria() {
-        return this.categoria;
+    public Integer getCategoriaId() {
+        if (categoria != null) return categoria.getId();
+        return null;
+    }
+
+    public String getCategoriaTitulo() {
+        if (categoria != null) return categoria.getTitulo();
+        return null;
     }
 
     public void setCategoria(@Valid Categoria categoria) {

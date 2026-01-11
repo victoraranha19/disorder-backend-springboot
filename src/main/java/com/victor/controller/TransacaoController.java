@@ -28,17 +28,17 @@ public class TransacaoController {
     public TransacaoPageDTO listarEntradas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
                                              @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
                                              @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
-                                             @RequestParam() @Nullable Integer carteiraId,
-                                             @RequestParam() @Nullable Integer categoriaId) throws ParseException {
-        return transacaoService.listarTransacoes(TipoTransacao.ENTRADA, pagina, itensPorPagina, mesAno, carteiraId, categoriaId);
+                                             @RequestParam() @Nullable Integer idCarteira,
+                                             @RequestParam() @Nullable Integer idCategoria) throws ParseException {
+        return transacaoService.listarTransacoes(TipoTransacao.ENTRADA, pagina, itensPorPagina, mesAno, idCarteira, idCategoria);
     }
     @GetMapping("/saidas")
     public TransacaoPageDTO listarSaidas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
                                              @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
                                              @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
-                                             @RequestParam() @Nullable Integer carteiraId,
-                                             @RequestParam() @Nullable Integer categoriaId) throws ParseException {
-        return transacaoService.listarTransacoes(TipoTransacao.SAIDA, pagina, itensPorPagina, mesAno, carteiraId, categoriaId);
+                                             @RequestParam() @Nullable Integer idCarteira,
+                                             @RequestParam() @Nullable Integer idCategoria) throws ParseException {
+        return transacaoService.listarTransacoes(TipoTransacao.SAIDA, pagina, itensPorPagina, mesAno, idCarteira, idCategoria);
     }
 
     @PostMapping

@@ -11,7 +11,8 @@ public class TransacaoMapper {
         if (transacao == null) return null;
         return new TransacaoDTO(transacao.getId(), transacao.getDescricao(), transacao.getValor(),
                 transacao.getDataTransacao(), transacao.getTipo().getValue(), transacao.getParcelas(),
-                transacao.getCarteira().getId(), transacao.getCategoria().getId());
+                transacao.getCarteiraId(), transacao.getCarteiraTitulo(), transacao.getCategoriaId(),
+                transacao.getCategoriaTitulo());
     }
 
     public static Transacao toEntity(TransacaoDTO transacaoDTO) {
