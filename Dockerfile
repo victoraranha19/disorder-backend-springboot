@@ -10,4 +10,4 @@ COPY --from=java /app/target/disorder-backend-springboot.jar /app/disorder-backe
 ENTRYPOINT ["java","-jar","/app/disorder-backend-springboot.jar"]
 
 # To build the Docker image, use:
-# docker build -t disorder-backend-springboot:latest .
+# docker build -t victoraranha19/disorder-backend-springboot:latest .
