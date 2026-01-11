@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.victor</groupId>
-	<artifactId>disorder-spring</artifactId>
+	<artifactId>disorder-backend-springboot</artifactId>
 	<version>1.0.0</version>
 	<name>disorder-spring</name>
 	<description>Projeto disorder em Spring + Angular</description>
