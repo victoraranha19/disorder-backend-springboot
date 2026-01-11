@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.victor</groupId>
 	<artifactId>disorder-spring</artifactId>
-	<version>1.0.0-SNAPSHOT.1</version>
+	<version>1.0.0</version>
 	<name>disorder-spring</name>
 	<description>Projeto disorder em Spring + Angular</description>
 	<url/>
