@@ -1,0 +1,52 @@
+name: Esteira Build CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Java 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'jetbrains'
+          cache: 'maven'
+
+      - name: Install and Tests with Maven
+        run: mvn clean install
+
+      - name: Build
+        run: mvn clean package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-application
+          path: ./target/disorder-backend-springboot.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-application
+          path: ./target/*.jar
+      - name: Run deployment script
+        uses: JorgeLNJunior/render-deploy@v1.4.7
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          clear_cache: false # Optional: Clear Render's build cache
+          wait_deploy: true
+          github_deployment: false
+          deployment_environment: 'production'
+          github_token: 'NA' # Not needed since github_deployment is false
