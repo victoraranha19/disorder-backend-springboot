@@ -1,7 +1,7 @@
 package com.victor.dto.mapper;
 
 import com.victor.dto.UsuarioDTO;
-import com.victor.dto.UsuarioRegistroDTO;
+import com.victor.dto.auth.UsuarioRegistrarDTO;
 import com.victor.enums.PapelAcesso;
 import com.victor.model.Usuario;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class UsuarioMapper {
     public static UsuarioDTO toDTO(Usuario usuario) {
         if (usuario == null) return null;
-        return new UsuarioDTO(usuario.getId(), usuario.getLogin(), usuario.getNomeCompleto(),
+        return new UsuarioDTO(usuario.getId(), usuario.getNomeCompleto(),
                 usuario.getEmail(), usuario.getTelefone(), usuario.getChavePix(), usuario.getPapel().getValue());
     }
 
@@ -20,7 +20,6 @@ public class UsuarioMapper {
         if (usuarioDTO.id() != null) {
             usuario.setId(usuarioDTO.id());
         }
-        usuario.setLogin(usuarioDTO.login());
         usuario.setNomeCompleto(usuarioDTO.nomeCompleto());
         usuario.setEmail(usuarioDTO.email());
         usuario.setTelefone(usuarioDTO.telefone());
@@ -29,12 +28,11 @@ public class UsuarioMapper {
         return usuario;
     }
 
-    public static Usuario novoUsuario(UsuarioRegistroDTO usuarioRegistroDTO) {
-        if (usuarioRegistroDTO == null) return null;
+    public static Usuario novoUsuario(UsuarioRegistrarDTO usuarioRegistrarDTO) {
+        if (usuarioRegistrarDTO == null) return null;
         Usuario usuario = new Usuario();
-        usuario.setLogin(usuarioRegistroDTO.login());
-        usuario.setNomeCompleto(usuarioRegistroDTO.nomeCompleto());
-        usuario.setEmail(usuarioRegistroDTO.email());
+        usuario.setEmail(usuarioRegistrarDTO.email());
+        usuario.setNomeCompleto(usuarioRegistrarDTO.nomeCompleto());
         return usuario;
     }
 }
