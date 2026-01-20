@@ -52,7 +52,7 @@ public class Transacao {
     private Usuario usuario;
 
     @Valid
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "idCarteira")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Carteira carteira;

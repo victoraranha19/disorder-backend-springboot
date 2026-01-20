@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.victor.model.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +16,20 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(Usuario usuario) {
+    public String generateToken(String username) throws JWTCreationException {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("auth-api")
-                    .withSubject(usuario.getLogin())
+                    .withSubject(username)
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException("Error while generating token", e);
+            throw new JWTCreationException("Erro ao gerar token.", e);
         }
     }
 
-    public String validateToken(String token) {
+    public String validateToken(String token) throws  JWTVerificationException {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -44,6 +43,6 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusDays(3).toInstant(ZoneOffset.of("-03:00"));
     }
 }

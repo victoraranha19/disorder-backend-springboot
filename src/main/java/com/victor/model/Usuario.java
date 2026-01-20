@@ -32,11 +32,6 @@ public class Usuario implements UserDetails {
     private UUID id;
 
     @NotBlank
-    @Length(max = 30)
-    @Column(length = 30, unique = true, nullable = false)
-    private String login = "";
-
-    @NotBlank
     @Column(nullable = false)
     private String senha = "";
 
@@ -46,7 +41,7 @@ public class Usuario implements UserDetails {
     private String nomeCompleto = "";
 
     @NotBlank
-    @Length(max = 100)
+    @Length(min = 3, max = 100)
     @Email
     @Column(length = 100, unique = true, nullable = false)
     private String email = "";
@@ -58,7 +53,7 @@ public class Usuario implements UserDetails {
 
     @NotNull
     @Length(max = 255)
-    @Column(length = 255)
+    @Column()
     private String chavePix = "";
 
     @NotNull
@@ -67,7 +62,7 @@ public class Usuario implements UserDetails {
     private PapelAcesso papel = PapelAcesso.USER;
 
     @Valid
-    @ManyToOne(optional = true)
+    @ManyToOne()
     @JoinColumn(name = "idAcessor")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario acessor;
@@ -98,14 +93,6 @@ public class Usuario implements UserDetails {
 
     public void setId(UUID idUsuario) {
         this.id = idUsuario;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(@NotBlank @Length(max = 30) String username) {
-        this.login = username;
     }
 
     public String getSenha() {
@@ -228,7 +215,7 @@ public class Usuario implements UserDetails {
     @Override
     @NullMarked
     public String getUsername() {
-        return this.getLogin();
+        return this.getEmail();
     }
 
     @Override

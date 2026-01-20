@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public record UsuarioDTO(
         UUID id,
-        @NotBlank @Length(max = 30) String login,
         @NotBlank @Length(min = 3, max = 100) String nomeCompleto,
         @NotBlank @Length(max = 100) @Email String email,
         @NotNull @Length(max = 20) String telefone,

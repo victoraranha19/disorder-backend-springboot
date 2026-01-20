@@ -1,18 +1,13 @@
 package com.victor.service;
 
-import com.victor.dto.UsuarioRegistroDTO;
-import com.victor.dto.mapper.UsuarioMapper;
-import com.victor.enums.PapelAcesso;
 import com.victor.exception.RecordNotFoundException;
 import com.victor.model.Usuario;
 import com.victor.repository.UsuarioRepository;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,29 +25,32 @@ public class UsuarioService implements UserDetailsService {
     }
 
     // Create
-    public void criarUsuario(@Valid @NotNull UsuarioRegistroDTO usuarioRegistroDTO) {
-        // Valida se o login já existe
-        if (usuarioRepository.findByLogin(usuarioRegistroDTO.login()) != null) {
-            throw new RuntimeException("Login já existe");
-        }
-        // Cria o novo usuário com acesso padrão USER
-        Usuario novoUsuario = UsuarioMapper.novoUsuario(usuarioRegistroDTO);
-        novoUsuario.setPapel(PapelAcesso.USER);
-        // Criptografa a senha antes de salvar
-        String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioRegistroDTO.senha());
-        novoUsuario.setSenha(encryptedPassword);
-        usuarioRepository.save(novoUsuario);
+    public void criarUsuario(@NotNull Usuario usuario) {
+        usuarioRepository.save(usuario);
     }
 
     // Read
     @Override
     @NullMarked
     public Usuario loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByLogin(username);
+        return buscarPorEmail(username);
+    }
+
+    public Usuario buscarPorEmail(@NotBlank String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+    public boolean verificaEmailExiste(@NotBlank String email) {
+        return buscarPorEmail(email) != null;
+    }
+
+    // Update
+    public void alterarUsuario(@NotNull UUID id, @NotNull Usuario usuario) {
+        usuario.setId(id);
+        usuarioRepository.save(usuario);
     }
 
     // Delete
-    public void deletarUsuario(@NotNull @Positive UUID id) {
+    public void deletarUsuario(@NotNull UUID id) {
         usuarioRepository.delete(usuarioRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
 

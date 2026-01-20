@@ -17,10 +17,7 @@ jobs:
           distribution: 'jetbrains'
           cache: 'maven'
 
-      - name: Install and Tests with Maven
-        run: mvn clean install
-
-      - name: Build
+      - name: Build and Tests with Maven
         run: mvn clean package
 
       - name: Upload artifact
