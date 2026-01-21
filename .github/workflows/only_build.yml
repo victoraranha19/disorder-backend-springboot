@@ -19,9 +19,3 @@ jobs:
 
       - name: Build and Tests with Maven
         run: mvn clean package
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-application
-          path: ./target/disorder-backend-springboot.jar
