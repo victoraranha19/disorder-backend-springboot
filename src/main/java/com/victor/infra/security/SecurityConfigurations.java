@@ -56,9 +56,13 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://disorder-frontend-angular.onrender.com"));
+        String FRONTEND_URL = "https://disorder-frontend-angular.onrender.com";
+//        String FRONTEND_URL = "http://localhost:4200";
+
+        configuration.setAllowedOrigins(List.of(FRONTEND_URL));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

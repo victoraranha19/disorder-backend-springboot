@@ -1,8 +1,9 @@
-name: Esteira Build CI
+name: Esteira Build e Deploy CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+        - main
 
 jobs:
   build:

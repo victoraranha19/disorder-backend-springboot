@@ -1,0 +1,21 @@
+name: Teste Pull Request
+on:
+  pull_request:
+    branches:
+        - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Java 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'jetbrains'
+          cache: 'maven'
+
+      - name: Build and Tests with Maven
+        run: mvn clean package
