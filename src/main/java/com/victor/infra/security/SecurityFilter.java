@@ -1,5 +1,7 @@
 package com.victor.infra.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.victor.exception.InvalidTokenException;
 import com.victor.model.Usuario;
 import com.victor.service.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,13 +29,16 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     @NullMarked
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws InvalidTokenException, UsernameNotFoundException, JWTVerificationException, ServletException, IOException {
         String token = this.recoverToken(request);
         if (token != null) {
-            var login = tokenService.validateToken(token);
+            String login = tokenService.validateToken(token);
+            if (login == null || login.isBlank()) {
+                throw new InvalidTokenException(token);
+            }
             Usuario user = usuarioService.loadUserByUsername(login);
             usuarioService.setUsuarioLogado(user);
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

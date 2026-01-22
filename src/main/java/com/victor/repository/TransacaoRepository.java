@@ -11,13 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface TransacaoRepository extends JpaRepository<Transacao, Integer> {
-    Page<Transacao> findByUsuarioIdAndDataTransacaoBetweenAndCarteiraIdAndCategoriaIdAndValorGreaterThanOrderByDataTransacaoDesc(UUID idUsuario, Date dataInicio, Date dataFim,
-                                                                                                                                 Integer idCarteira, Integer idCategoria, Double valor,
-                                                                                                                                 Pageable pageable);
+    Page<Transacao> findByUsuarioIdAndDataTransacaoBetweenAndCarteiraIdAndCategoriaIdAndValorGreaterThanOrderByDataTransacaoDesc(UUID idUsuario, Date dataInicio, Date dataFim, Integer idCarteira, Integer idCategoria, Double valor, Pageable pageable);
 
-    Page<Transacao> findByUsuarioIdAndDataTransacaoBetweenAndCarteiraIdAndCategoriaIdAndValorLessThanOrderByDataTransacaoDesc(UUID idUsuario, Date dataInicio, Date dataFim,
-                                                                                                                              Integer idCarteira, Integer idCategoria, Double valor,
-                                                                                                                              Pageable pageable);
+    Page<Transacao> findByUsuarioIdAndDataTransacaoBetweenAndCarteiraIdAndCategoriaIdAndValorLessThanOrderByDataTransacaoDesc(UUID idUsuario, Date dataInicio, Date dataFim, Integer idCarteira, Integer idCategoria, Double valor, Pageable pageable);
 
     Page<Transacao> findByUsuarioIdAndDataTransacaoBetweenAndCarteiraIdAndValorGreaterThanOrderByDataTransacaoDesc(UUID idUsuario, Date dataInicio, Date dataFim, Integer idCarteira, Double valor, Pageable pageable);
 

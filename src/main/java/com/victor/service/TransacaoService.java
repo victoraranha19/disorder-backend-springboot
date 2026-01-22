@@ -52,12 +52,7 @@ public class TransacaoService {
     }
 
     // Read
-    public TransacaoPageDTO listarTransacoes(@NotNull TipoTransacao tipoTransacao,
-                                             @PositiveOrZero int pagina,
-                                             @Positive @Max(100) int itensPorPagina,
-                                             @NotNull @Length(min = 6, max = 6) String mesAno,
-                                             @Nullable Integer idCarteira,
-                                             @Nullable Integer idCategoria) throws ParseException {
+    public TransacaoPageDTO listarTransacoes(@NotNull TipoTransacao tipoTransacao, @PositiveOrZero int pagina, @Positive @Max(100) int itensPorPagina, @NotNull @Length(min = 6, max = 6) String mesAno, @Nullable Integer idCarteira, @Nullable Integer idCategoria) throws ParseException {
         UUID idUsuario = usuarioService.getUsuarioLogado().getId();
         PageRequest pageRequest = PageRequest.of(pagina, itensPorPagina);
         Page<Transacao> pageTransacoes;
@@ -68,26 +63,21 @@ public class TransacaoService {
             default -> throw new RuntimeException("Tipo de transação inválido");
         }
         List<TransacaoDTO> transacoes = pageTransacoes.get().map(TransacaoMapper::toDTO).collect(Collectors.toList());
-        return new TransacaoPageDTO(transacoes,
-                pageTransacoes.getNumberOfElements(),
-                pageTransacoes.getTotalPages());
+        return new TransacaoPageDTO(transacoes, pageTransacoes.getNumberOfElements(), pageTransacoes.getTotalPages());
     }
 
     // Update
     public TransacaoDTO atualizarTransacao(@NotNull @Positive Integer id, @Valid @NotNull TransacaoDTO transacaoDTO) {
-        return transacaoRepository.findById(id)
-                .map((recordFound) -> {
-                    recordFound.setTipo(TipoCarteira.convertTipoTransacaoValue(transacaoDTO.tipo()));
-                    recordFound.setDataTransacao(transacaoDTO.dataTransacao());
-                    recordFound.setValor(transacaoDTO.valor());
-                    recordFound.setDescricao(transacaoDTO.descricao());
-                    recordFound.setParcelas(transacaoDTO.parcelas());
-                    recordFound.setCarteira(carteiraService.carteiraTransacaoPorId(transacaoDTO.idCarteira()));
-                    recordFound.setCategoria(categoriaService.categoriaTransacaoPorId(transacaoDTO.idCategoria()));
-                    return transacaoRepository.save(recordFound);
-                })
-                .map(TransacaoMapper::toDTO)
-                .orElseThrow(() -> new RecordNotFoundException(id));
+        return transacaoRepository.findById(id).map((recordFound) -> {
+            recordFound.setTipo(TipoCarteira.convertTipoTransacaoValue(transacaoDTO.tipo()));
+            recordFound.setDataTransacao(transacaoDTO.dataTransacao());
+            recordFound.setValor(transacaoDTO.valor());
+            recordFound.setDescricao(transacaoDTO.descricao());
+            recordFound.setParcelas(transacaoDTO.parcelas());
+            recordFound.setCarteira(carteiraService.carteiraTransacaoPorId(transacaoDTO.idCarteira()));
+            recordFound.setCategoria(categoriaService.categoriaTransacaoPorId(transacaoDTO.idCategoria()));
+            return transacaoRepository.save(recordFound);
+        }).map(TransacaoMapper::toDTO).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     // Delete
@@ -95,11 +85,7 @@ public class TransacaoService {
         transacaoRepository.delete(transacaoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
-    private Page<Transacao> getTransacoesEntrada(@NotNull @Length(min = 6, max = 6) String mesAno,
-                                                 @NotNull UUID idUsuario,
-                                                 @NotNull PageRequest pageRequest,
-                                                 @Nullable Integer idCarteira,
-                                                 @Nullable Integer idCategoria) throws ParseException {
+    private Page<Transacao> getTransacoesEntrada(@NotNull @Length(min = 6, max = 6) String mesAno, @NotNull UUID idUsuario, @NotNull PageRequest pageRequest, @Nullable Integer idCarteira, @Nullable Integer idCategoria) throws ParseException {
         Date dataInicio = getDataInicioMesAno(mesAno);
         Date dataFim = getDataFimMesAno(mesAno);
         if (idCarteira != null && idCategoria != null) {
@@ -114,11 +100,7 @@ public class TransacaoService {
         return transacaoRepository.findByUsuarioIdAndDataTransacaoBetweenAndValorGreaterThanOrderByDataTransacaoDesc(idUsuario, dataInicio, dataFim, 0.0, pageRequest);
     }
 
-    private Page<Transacao> getTransacoesSaida(@NotNull @Length(min = 6, max = 6) String mesAno,
-                                               @NotNull UUID idUsuario,
-                                               @NotNull PageRequest pageRequest,
-                                               @Nullable Integer idCarteira,
-                                               @Nullable Integer idCategoria) throws ParseException {
+    private Page<Transacao> getTransacoesSaida(@NotNull @Length(min = 6, max = 6) String mesAno, @NotNull UUID idUsuario, @NotNull PageRequest pageRequest, @Nullable Integer idCarteira, @Nullable Integer idCategoria) throws ParseException {
         Date dataInicio = getDataInicioMesAno(mesAno);
         Date dataFim = getDataFimMesAno(mesAno);
         if (idCarteira != null && idCategoria != null) {

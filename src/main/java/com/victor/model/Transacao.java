@@ -17,7 +17,6 @@ import java.util.Date;
 @Table(name = "transacoes")
 @SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "ativo")
 public class Transacao {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -52,7 +51,7 @@ public class Transacao {
     private Usuario usuario;
 
     @Valid
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "idCarteira")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Carteira carteira;
