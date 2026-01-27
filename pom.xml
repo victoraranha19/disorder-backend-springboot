@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.victor</groupId>
 	<artifactId>disorder-backend-springboot</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<name>disorder-spring</name>
 	<description>Projeto disorder em Spring + Angular</description>
 	<url/>
