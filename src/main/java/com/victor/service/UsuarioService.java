@@ -1,5 +1,7 @@
 package com.victor.service;
 
+import com.victor.dto.UsuarioDTO;
+import com.victor.dto.mapper.UsuarioMapper;
 import com.victor.exception.RecordNotFoundException;
 import com.victor.model.Usuario;
 import com.victor.repository.UsuarioRepository;
@@ -34,6 +36,10 @@ public class UsuarioService implements UserDetailsService {
     @NullMarked
     public Usuario loadUserByUsername(String username) throws UsernameNotFoundException {
         return buscarPorEmail(username);
+    }
+
+    public UsuarioDTO meuPerfil() {
+        return UsuarioMapper.toDTO(getUsuarioLogado());
     }
 
     public Usuario buscarPorEmail(@NotBlank String email) {
