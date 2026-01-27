@@ -1,6 +1,7 @@
 package com.victor.controller;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.victor.dto.UsuarioDTO;
 import com.victor.dto.auth.*;
 import com.victor.service.AuthenticationService;
 import com.victor.service.UsuarioService;
@@ -25,6 +26,11 @@ public class UsuarioController {
         this.authenticationService = authenticationService;
     }
 
+    @GetMapping("/meu-perfil")
+    public UsuarioDTO meuPerfil() {
+        return usuarioService.meuPerfil();
+    }
+
     @PostMapping("/registrar")
     public void register(@RequestBody @Valid UsuarioRegistrarDTO usuarioRegistrarDTO) throws BadRequestException {
         authenticationService.registrarUsuario(usuarioRegistrarDTO);
@@ -40,7 +46,7 @@ public class UsuarioController {
         authenticationService.alterarSenha(usuarioAlterarSenhaDTO);
     }
 
-    @PostMapping("/esqueci-senha")
+    @PostMapping("/recuperar-conta")
     public void esqueciSenha(@RequestBody @Valid UsuarioEsqueciSenhaDTO usuarioEsqueciSenhaDTO) throws MailException {
         authenticationService.recuperarSenha(usuarioEsqueciSenhaDTO);
     }

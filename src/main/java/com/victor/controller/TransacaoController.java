@@ -1,19 +1,16 @@
 package com.victor.controller;
 
 import com.victor.dto.TransacaoDTO;
-import com.victor.dto.TransacaoPageDTO;
 import com.victor.enums.TipoTransacao;
 import com.victor.service.TransacaoService;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transacoes")
@@ -25,20 +22,17 @@ public class TransacaoController {
     }
 
     @GetMapping("/entradas")
-    public TransacaoPageDTO listarEntradas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
-                                             @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
-                                             @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
+    public List<TransacaoDTO> listarEntradas(@RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
                                              @RequestParam() @Nullable Integer idCarteira,
                                              @RequestParam() @Nullable Integer idCategoria) throws ParseException {
-        return transacaoService.listarTransacoes(TipoTransacao.ENTRADA, pagina, itensPorPagina, mesAno, idCarteira, idCategoria);
+        return transacaoService.listarTransacoes(TipoTransacao.ENTRADA, mesAno, idCarteira, idCategoria);
     }
+
     @GetMapping("/saidas")
-    public TransacaoPageDTO listarSaidas(@RequestParam(defaultValue = "0") @PositiveOrZero int pagina,
-                                             @RequestParam(defaultValue = "10") @Positive @Max(100) int itensPorPagina,
-                                             @RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
-                                             @RequestParam() @Nullable Integer idCarteira,
-                                             @RequestParam() @Nullable Integer idCategoria) throws ParseException {
-        return transacaoService.listarTransacoes(TipoTransacao.SAIDA, pagina, itensPorPagina, mesAno, idCarteira, idCategoria);
+    public List<TransacaoDTO> listarSaidas(@RequestParam() @NotNull @Length(min = 6, max = 6) String mesAno,
+                                           @RequestParam() @Nullable Integer idCarteira,
+                                           @RequestParam() @Nullable Integer idCategoria) throws ParseException {
+        return transacaoService.listarTransacoes(TipoTransacao.SAIDA, mesAno, idCarteira, idCategoria);
     }
 
     @PostMapping
